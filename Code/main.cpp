@@ -1,24 +1,18 @@
 #include <SFML/Graphics.hpp>
+#include "Classes/WindowStateManager.h"
+#include "Classes/Menu.h"
+
+WindowStateManager* WStateManager;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    WStateManager = &WindowStateManager::getInstance();
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+    std::unique_ptr<IWindowActivity> wMenu = std::make_unique<Menu>(sf::VideoMode(500, 500), "My Menu");
+ 
+    WStateManager->setState(std::move(wMenu));
+    WStateManager->RunState();
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
 
     return 0;
 }
