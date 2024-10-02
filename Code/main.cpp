@@ -6,13 +6,17 @@ WindowStateManager* WStateManager;
 
 int main()
 {
+  
     WStateManager = &WindowStateManager::getInstance();
+    WStateManager->InnitWindow({ 500,500 }, "Main Menu");
 
-    std::unique_ptr<IWindowActivity> wMenu = std::make_unique<Menu>(sf::VideoMode(500, 500), "My Menu");
+    std::unique_ptr<IWindowActivity> wMenu = std::make_unique<Menu>();
  
     WStateManager->setState(std::move(wMenu));
     WStateManager->RunState();
-
+  
+ 
+  
 
     return 0;
 }

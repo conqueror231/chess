@@ -7,7 +7,7 @@ public:
 virtual void Run();
 
 protected:
-	sf::RenderWindow window;
+	sf::RenderWindow * window;
 	sf::String windowTitle = "Default";
 	sf::VideoMode videoMode { 500, 500 };
 
@@ -18,13 +18,11 @@ protected:
 	virtual void Draw() = 0;
 	
 
-	IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitle_)
-		: window(videoMode_, windowTitle_), videoMode(videoMode_), windowTitle(windowTitle_)
-	{
+	IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitle_);
 
-	}
 
-	
+	IWindowActivity();
+
 
 
 

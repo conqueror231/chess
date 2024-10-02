@@ -1,6 +1,10 @@
 #include "Menu.h"
 
+Menu::Menu()
+{
+  
 
+}
 
 Menu::Menu(sf::VideoMode videoMode_, sf::String windowTitle_)
     : IWindowActivity(videoMode_, windowTitle_) 
@@ -10,7 +14,7 @@ Menu::Menu(sf::VideoMode videoMode_, sf::String windowTitle_)
 
 void Menu::HandleInput()
 {
-  
+ 
 }
 
 void Menu::Update()
@@ -24,20 +28,20 @@ void Menu::Draw()
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    while (window.isOpen())
+    while (window->isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                window->close();
         }
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
 
+        window->clear();
+        window->draw(shape);
+        window->display();
+    }
 }
 
 void Menu::Run()
