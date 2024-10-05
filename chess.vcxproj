@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Code\Classes\ChessBoard.cpp" />
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\Classes\IWindowActivity.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Code\Classes\Figure.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Code\Classes\ChessBoard.h" />
     <ClInclude Include="Code\Classes\IWindowActivity.h" />
     <ClInclude Include="Code\Classes\WindowStateManager.h" />

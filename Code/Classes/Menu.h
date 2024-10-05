@@ -9,6 +9,7 @@ public:
 	Menu();
 	Menu(sf::VideoMode videoMode_, sf::String windowTitle_);
 private:
+	 sf::RectangleShape btnStartGame;
 
 	 void HandleInput() override;
 
@@ -18,6 +19,7 @@ private:
 
 	 void Run() override;
 
+	 void InnitGUI();
 
 };
 
