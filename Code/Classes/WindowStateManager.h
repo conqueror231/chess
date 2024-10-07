@@ -25,7 +25,7 @@ public:
 
 	sf::RenderWindow& GetWindow() {
 		if (window == nullptr) {
-			InnitWindow({ 500,500 }, "untitled");
+			InnitWindow({ 1000,1000 }, "untitled");
 		}
 		return * window;
 	}

@@ -15,6 +15,7 @@ public:
     ChessBoard() {};
 
     static ChessBoard& getInstance() {
+        
         static ChessBoard instance;
         return instance;
     }
