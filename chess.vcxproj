@@ -149,6 +149,7 @@
     <ClCompile Include="Code\Classes\Menu.cpp" />
     <ClCompile Include="Code\Classes\Tile.cpp" />
     <ClCompile Include="Code\Classes\Figure.cpp" />
+    <ClCompile Include="Code\Classes\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Code\Classes\Menu.h" />
     <ClInclude Include="Code\Classes\Tile.h" />
     <ClInclude Include="Code\Classes\Figure.h" />
+    <ClInclude Include="Code\Classes\Game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

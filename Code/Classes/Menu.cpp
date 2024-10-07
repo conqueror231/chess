@@ -1,5 +1,5 @@
 #include "Menu.h"
-
+#include "WindowStateManager.h"
 Menu::Menu()
 {
   
@@ -23,7 +23,7 @@ void Menu::HandleInput()
 
             if (btnStartGame.getGlobalBounds().contains((float)mousePos.x, (float)mousePos.y)) {
                 
-                btnStartGame.setFillColor(sf::Color::Green);
+                WindowStateManager::getInstance().createGame();
             }
 
         }

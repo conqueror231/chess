@@ -39,6 +39,9 @@ public:
 		return instance;
 }
 
+	void createMenu();
+	void createGame();
+
 	void setState(std::unique_ptr<IWindowActivity> newState) {
 		currentState = std::move(newState);
 	}

@@ -1,6 +1,6 @@
 #include "IWindowActivity.h"
 #include "WindowStateManager.h"
-
+#include "iostream"
 void IWindowActivity::Run()
 {
 	while (window->isOpen()) {
@@ -23,7 +23,8 @@ IWindowActivity::IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitl
 IWindowActivity::IWindowActivity()
 {
 	window = &WindowStateManager::getInstance().GetWindow();
-}
+
+ }
 
 
 
