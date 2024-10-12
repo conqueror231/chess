@@ -8,7 +8,7 @@ int main()
 {
   
     WStateManager = &WindowStateManager::getInstance();
-    WStateManager->InnitWindow({ 1200,900 }, "Main Menu");
+    WStateManager->InnitWindow({ 1024,768 }, "Main Menu");
 
     WStateManager->createMenu();
  
