@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "WindowStateManager.h"
+#include "ChessBoard.h"
 #include <iostream>
 Game::Game()
 {
@@ -19,44 +20,47 @@ void Game::HandleInput()
     sf::Event event;
     while (window->pollEvent(event))
     {
-        sf::Vector2i gamePromptStartPos(offsetXForGamePrompt, offsetYForGamePrompt);
-        sf::Vector2i gamePromptEndPos(offsetXForGamePrompt + TileSize * 8,
-                                                        offsetYForGamePrompt + TileSize * 8);
+        sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
+        sf::Vector2i gamePromptEndPos(offsetXForChessBoard + TileSize * 8,
+                                                        offsetYForChessBoard + TileSize * 8);
         sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
-        if (mousePos.x >= gamePromptStartPos.x && mousePos.x <= gamePromptEndPos.x &&
-            mousePos.y >= gamePromptStartPos.y && mousePos.y <= gamePromptEndPos.y) {
+        if (mousePos.x >= chessBoardStartPos.x && mousePos.x <= gamePromptEndPos.x &&
+            mousePos.y >= chessBoardStartPos.y && mousePos.y <= gamePromptEndPos.y) {
 
             for (int x = 0; x < 8; x++) {
-                if (mousePos.x >= gamePromptStartPos.x + TileSize * (x+1))
+                if (mousePos.x >= chessBoardStartPos.x + TileSize * (x+1))
                     continue;
                  for (int y = 0; y < 8; y++) {
-                      if (mousePos.y >= gamePromptStartPos.y + TileSize * (y + 1))
+                      if (mousePos.y >= chessBoardStartPos.y + TileSize * (y + 1))
                          continue;
 
-                      selectedTileIndex.x = x;
-                      selectedTileIndex.y = y;
+                      hoveredTileIndexes.x = x;
+                      hoveredTileIndexes.y = y;
                       std::cout << "Row: " << y + 1 << ", Column: " << columnsLabels[x] << std::endl;
                       break;
                     }
                     break;
                 }
-            
 
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+            {
+                
+            }
 
         }
         else {
-            selectedTileIndex.x = -1;
-            selectedTileIndex.y = -1;
-        }
+            hoveredTileIndexes.x = -1;
+            hoveredTileIndexes.y = -1;
+        }      
 
-            
-          
-        }
+      
+    }
 
         if (event.type == sf::Event::Closed)
             window->close();
-    }
+}
 
 void Game::Update()
 {
@@ -67,7 +71,7 @@ void Game::Draw()
 {
     window->clear(sf::Color::Cyan);
     
-   // game prompt
+   // chess board
     sf::Color lightColor = sf::Color::White;
     sf::Color darkColor(73, 84, 202);
    
@@ -78,7 +82,7 @@ void Game::Draw()
             sf::RectangleShape tile(sf::Vector2f(TileSize, TileSize));
 
          
-            tile.setPosition(col * TileSize + offsetXForGamePrompt, row * TileSize + offsetYForGamePrompt);
+            tile.setPosition(col * TileSize + offsetXForChessBoard, row * TileSize + offsetYForChessBoard);
 
             if ((row + col) % 2 == 0) {
                 tile.setFillColor(lightColor); 
@@ -94,15 +98,15 @@ void Game::Draw()
 
     //left side menu
     sf::RectangleShape rectangle;
-    rectangle.setSize(sf::Vector2f(203, 768));  // Устанавливаем размер
-    rectangle.setFillColor(sf::Color(17, 140, 202));  // Устанавливаем цвет #118CCA
+    rectangle.setSize(sf::Vector2f(203, 768));
+    rectangle.setFillColor(sf::Color(17, 140, 202));  
     window->draw(rectangle);
 
-    if (selectedTileIndex.x != -1 && selectedTileIndex.y != -1) {
+    if (hoveredTileIndexes.x != -1 && hoveredTileIndexes.y != -1) {
         sf::RectangleShape highlightedTile(sf::Vector2f(TileSize, TileSize));
-        highlightedTile.setPosition(selectedTileIndex.x * TileSize + offsetXForGamePrompt,
-        selectedTileIndex.y * TileSize + offsetYForGamePrompt);
-        highlightedTile.setFillColor(sf::Color(255, 255, 0, 128));  // Полупрозрачный жёлтый цвет
+        highlightedTile.setPosition(hoveredTileIndexes.x * TileSize + offsetXForChessBoard,
+            hoveredTileIndexes.y * TileSize + offsetYForChessBoard);
+        highlightedTile.setFillColor(sf::Color(135, 215, 255, 128));  
         window->draw(highlightedTile);
     }
 
@@ -116,5 +120,5 @@ void Game::Run()
 
 void Game::InnitGUI()
 {
-
+    chessBoard = &ChessBoard::getInstance();
 }

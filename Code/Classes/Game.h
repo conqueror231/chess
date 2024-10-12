@@ -7,13 +7,16 @@ class Game : public IWindowActivity
 		Game();
 		Game(sf::VideoMode videoMode_, sf::String windowTitle_);
 	private:
-		const uint16_t offsetXForGamePrompt = 254;
-		const uint16_t offsetYForGamePrompt = 18;
+		const uint16_t offsetXForChessBoard = 254;
+		const uint16_t offsetYForChessBoard = 18;
 		const uint16_t TileSize = 75;
 
 		const char columnsLabels[8] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
 
-		sf::Vector2f selectedTileIndex{-1, -1};
+		sf::Vector2f hoveredTileIndexes{-1, -1};
+		class Tile* selectedTile;
+
+		class ChessBoard* chessBoard;
 
 		void HandleInput() override;
 
