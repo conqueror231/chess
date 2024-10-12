@@ -1,9 +1,9 @@
 #pragma once
-#include "Tile.h"
+#include "ChessPiece.h"
 
 class ChessBoard
 {
-	Tile* board[8][8];
+	std::vector<ChessPiece> ChessPieces;
 	float TileSize = 50.f;
 
 
