@@ -40,18 +40,10 @@ void Menu::Update()
 
 void Menu::Draw()
 {
-
-
-    
-   
-
-
-
     window->clear();
     window->draw(btnStartGame);
 
     window->display();
-    
 }
 
 void Menu::Run()

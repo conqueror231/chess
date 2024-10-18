@@ -148,6 +148,7 @@
     <ClCompile Include="Code\Classes\WindowStateManager.cpp" />
     <ClCompile Include="Code\Classes\Menu.cpp" />
     <ClCompile Include="Code\Classes\Game.cpp" />
+    <ClCompile Include="Code\Classes\Pawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Classes\ChessPiece.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Code\Classes\WindowStateManager.h" />
     <ClInclude Include="Code\Classes\Menu.h" />
     <ClInclude Include="Code\Classes\Game.h" />
+    <ClInclude Include="Code\Classes\Pawn.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
