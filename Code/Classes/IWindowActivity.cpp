@@ -15,7 +15,6 @@ IWindowActivity::IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitl
 	window = &WindowStateManager::getInstance().GetWindow();
 
 	window->setTitle(windowTitle_);
-
 	window->setSize(sf::Vector2u(videoMode_.width, videoMode_.height));
 
 }
@@ -23,8 +22,7 @@ IWindowActivity::IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitl
 IWindowActivity::IWindowActivity()
 {
 	window = &WindowStateManager::getInstance().GetWindow();
-
- }
+}
 
 
 

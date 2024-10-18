@@ -20,6 +20,10 @@ class Game : public IWindowActivity
 
 		void HandleInput() override;
 
+		bool isMouseInChessBoard(sf::Vector2i& mousePos, sf::Vector2i& chessBoardStartPos, sf::Vector2i& gamePromptEndPos);
+
+		void calculateHoveredTilePosition(sf::Vector2i& mousePos, sf::Vector2i& chessBoardStartPos);
+
 		void Update() override;
 
 		void Draw() override;
