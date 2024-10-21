@@ -24,7 +24,7 @@ public:
         return instance;
     }
     const std::vector<ChessPiece*>& getChessPieces() const;
-
+    ChessPiece* getChessPieceByPos(int x, int y) const;
    
 };
 
