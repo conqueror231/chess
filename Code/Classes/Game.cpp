@@ -18,8 +18,8 @@ void Game::HandleInput()
     sf::Event event;
     while (window->pollEvent(event))
     {
-        sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
-        sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8,
+        static sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
+        static sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8,
                                                         offsetYForChessBoard + TileSize * 8);
         sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
@@ -33,10 +33,13 @@ void Game::HandleInput()
 
             if (selectedChessPiece && clickedChessPiece) {
                 // Attack: selectedChessPiece attacks clickedChessPiece
+                selectedChessPiece->Move(hoveredTileIndexes, chessBoard->getChessPieces());
+           
+               
                 std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                     << ") attacks piece at position (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
-                selectedTileIndexes = sf::Vector2f(-1, -1);
+                selectedTileIndexes = sf::Vector2i(-1, -1);
             }
             else if (selectedChessPiece == nullptr && clickedChessPiece == nullptr) {
                 selectedTileIndexes = hoveredTileIndexes;
@@ -44,6 +47,7 @@ void Game::HandleInput()
             else if (selectedChessPiece == nullptr) {
                 // If no piece is selected, select the new tile
                 selectedTileIndexes = hoveredTileIndexes;
+         
                 std::cout << "Piece selected at tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
             }
             else if (clickedChessPiece == nullptr) {
@@ -51,7 +55,8 @@ void Game::HandleInput()
                 std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                     << ") moved to tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
-                selectedTileIndexes = sf::Vector2f(-1, -1);
+                selectedChessPiece->Move(hoveredTileIndexes, chessBoard->getChessPieces());
+                selectedTileIndexes = sf::Vector2i(-1, -1);
                
             }
 
@@ -59,7 +64,7 @@ void Game::HandleInput()
 
         }
         else {
-            hoveredTileIndexes = sf::Vector2f(-1, -1);
+            hoveredTileIndexes = sf::Vector2i(-1, -1);
         }      
     }
 
@@ -67,23 +72,6 @@ void Game::HandleInput()
             window->close();
 }
 
-/*ChessPiece* clickedChessPiece;
-                clickedChessPiece = chessBoard->getChessPieceByPos(selectedTileIndexes.x, selectedTileIndexes.y);
-
-             
-                if (clickedChessPiece != nullptr) {
-                     ChessPiece* clickedChessSecondPiece = chessBoard->getChessPieceByPos(hoveredTileIndexes.x, hoveredTileIndexes.y);
-                    if (clickedChessSecondPiece) {
-                        // clickedChessPiece attack secondChessPiece
-                    }
-                    else {
-                        // clickedChessPiece move to hoveredTileIndexes.x, hoveredTileIndexes.y
-                    }
-                }
-                else {
-                    
-                }
-*/
 
 bool Game::isMouseInChessBoard(sf::Vector2i& mousePos, sf::Vector2i& chessBoardStartPos, sf::Vector2i& gamePromptEndPos)
 {
@@ -150,15 +138,17 @@ void Game::Draw()
         else
             pawnShape.setFillColor(sf::Color::Black); 
 
+
         pawnShape.setPosition(
-            piece->x * TileSize + offsetXForChessBoard + TileSize / 4,
-            piece->y * TileSize + offsetYForChessBoard + TileSize / 4
+          
+            piece->GetPosition().x * TileSize + offsetXForChessBoard + TileSize / 4,
+            piece->GetPosition().y* TileSize + offsetYForChessBoard + TileSize / 4
         );
 
         window->draw(pawnShape); 
     }
     
-    //left side menu
+    //left side menu 
     sf::RectangleShape rectangle;
     rectangle.setSize(sf::Vector2f(203, 768));
     rectangle.setFillColor(sf::Color(17, 140, 202));  

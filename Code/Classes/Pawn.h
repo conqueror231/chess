@@ -2,8 +2,8 @@
 #include "ChessPiece.h"
 class Pawn : public ChessPiece {
 public:
-    Pawn(int startX, int startY, bool isWhite) : ChessPiece(startX, startY, isWhite) {}
-
-    bool Move(int newX, int newY, const std::vector<ChessPiece>& pieces) override;
+    Pawn(sf::Vector2i startPosition, bool isWhite) : ChessPiece(startPosition, isWhite) {};
+    bool Move(sf::Vector2i newPosition, const std::vector<ChessPiece*>& pieces) override;
+   
 };
 

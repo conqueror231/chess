@@ -13,8 +13,8 @@ class Game : public IWindowActivity
 
 		const char columnsLabels[8] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
 
-		sf::Vector2f hoveredTileIndexes{-1, -1};
-		sf::Vector2f selectedTileIndexes{ -1, -1 };
+		sf::Vector2i hoveredTileIndexes{-1, -1};
+		sf::Vector2i selectedTileIndexes{ -1, -1 };
 	
 
 		class ChessBoard* chessBoard;

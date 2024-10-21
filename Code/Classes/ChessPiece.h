@@ -1,11 +1,18 @@
 #pragma once
 #include<vector>
+#include <SFML/System/Vector2.hpp>
+
 class ChessPiece {
+protected:
+    sf::Vector2i position;
+ 
 public:
-    int x, y; 
+    sf::Vector2i GetPosition() {
+        return position;
+    }
     bool isWhite = false; 
 
-    ChessPiece(int startX, int startY, bool isWhite) : x(startX), y(startY), isWhite(isWhite) {}
+    ChessPiece(sf::Vector2i  startPosition, bool isWhite) : position(startPosition), isWhite(isWhite) {}
 
-    virtual bool Move(int newX, int newY, const std::vector<ChessPiece>& pieces) = 0; 
+    virtual bool Move(sf::Vector2i  newPosition, const std::vector<ChessPiece*>& pieces) = 0;
 };

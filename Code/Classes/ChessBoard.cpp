@@ -5,11 +5,11 @@ void ChessBoard::InnitChessBoard()
 {
     //black pawns
     for (int i = 0; i < 8; ++i) {
-        ChessPieces.push_back(new Pawn(i, 1, false));
+        ChessPieces.push_back(new Pawn(sf::Vector2i{ i, 1 }, false));
     }
     //white pawns
     for (int i = 0; i < 8; ++i) {
-        ChessPieces.push_back(new Pawn(i, 6, true));
+        ChessPieces.push_back(new Pawn(sf::Vector2i{ i, 6 }, true));
     }
 }
 
@@ -22,7 +22,7 @@ ChessPiece* ChessBoard::getChessPieceByPos(int x, int y) const
 {
     for (ChessPiece* piece : ChessPieces)
     {
-        if (piece->x == x && piece->y == y) {
+        if (piece->GetPosition().x == x && piece->GetPosition().y == y) {
             return piece;
         }
     }
