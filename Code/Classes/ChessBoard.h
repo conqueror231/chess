@@ -25,6 +25,6 @@ public:
     }
     const std::vector<ChessPiece*>& getChessPieces() const;
     ChessPiece* getChessPieceByPos(int x, int y) const;
-   
+    bool removeChessPiece(ChessPiece& chessPieceForDeleting);
 };
 

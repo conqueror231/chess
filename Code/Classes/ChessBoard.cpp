@@ -11,6 +11,7 @@ void ChessBoard::InnitChessBoard()
     for (int i = 0; i < 8; ++i) {
         ChessPieces.push_back(new Pawn(sf::Vector2i{ i, 6 }, true));
     }
+
 }
 
 const std::vector<ChessPiece*>& ChessBoard::getChessPieces() const
@@ -29,3 +30,15 @@ ChessPiece* ChessBoard::getChessPieceByPos(int x, int y) const
 
     return nullptr;
 }
+
+bool ChessBoard::removeChessPiece(ChessPiece& chessPieceForDeleting) {
+    for (auto it = ChessPieces.begin(); it != ChessPieces.end(); ++it) {
+        if (*it == &chessPieceForDeleting) { 
+            delete* it; 
+            ChessPieces.erase(it); 
+            return true;
+        }
+    }
+    return false; 
+}
+
