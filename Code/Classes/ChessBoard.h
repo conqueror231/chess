@@ -1,11 +1,11 @@
 #pragma once
-#include "ChessPiece.h"
-#include "Pawn.h"
-#include "Rook.h"
-#include "Queen.h"
-#include "King.h"
-#include "Bishop.h"
-#include "Knight.h"
+#include "ChessPieces/ChessPiece.h"
+#include "ChessPieces/Pawn.h"
+#include "ChessPieces/Rook.h"
+#include "ChessPieces/Queen.h"
+#include "ChessPieces/King.h"
+#include "ChessPieces/Bishop.h"
+#include "ChessPieces/Knight.h"
 
 
 class ChessBoard

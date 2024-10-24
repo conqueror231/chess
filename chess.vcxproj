@@ -141,33 +141,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Classes\Bishop.cpp" />
-    <ClCompile Include="Code\Classes\ChessPiece.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\Bishop.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\ChessPiece.cpp" />
     <ClCompile Include="Code\Classes\ChessBoard.cpp" />
     <ClCompile Include="Code\main.cpp" />
     <ClCompile Include="Code\Classes\IWindowActivity.cpp" />
     <ClCompile Include="Code\Classes\WindowStateManager.cpp" />
     <ClCompile Include="Code\Classes\Menu.cpp" />
     <ClCompile Include="Code\Classes\Game.cpp" />
-    <ClCompile Include="Code\Classes\Pawn.cpp" />
-    <ClCompile Include="Code\Classes\Rook.cpp" />
-    <ClCompile Include="Code\Classes\Queen.cpp" />
-    <ClCompile Include="Code\Classes\King.cpp" />
-    <ClCompile Include="Code\Classes\Knight.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\Pawn.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\Rook.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\Queen.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\King.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\Knight.cpp" />
+    <ClCompile Include="Code\Classes\ChessPieces\PieceType.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Classes\Bishop.h" />
-    <ClInclude Include="Code\Classes\ChessPiece.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\Bishop.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\ChessPiece.h" />
     <ClInclude Include="Code\Classes\ChessBoard.h" />
     <ClInclude Include="Code\Classes\IWindowActivity.h" />
     <ClInclude Include="Code\Classes\WindowStateManager.h" />
     <ClInclude Include="Code\Classes\Menu.h" />
     <ClInclude Include="Code\Classes\Game.h" />
-    <ClInclude Include="Code\Classes\Pawn.h" />
-    <ClInclude Include="Code\Classes\Rook.h" />
-    <ClInclude Include="Code\Classes\Queen.h" />
-    <ClInclude Include="Code\Classes\King.h" />
-    <ClInclude Include="Code\Classes\Knight.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\Pawn.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\Rook.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\Queen.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\King.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\Knight.h" />
+    <ClInclude Include="Code\Classes\ChessPieces\PieceType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

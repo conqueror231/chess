@@ -4,13 +4,16 @@
 #include <iostream>
 Game::Game()
 {
+    loadTextures();
     InnitGUI();
 }
 
 Game::Game(sf::VideoMode videoMode_, sf::String windowTitle_)
     : IWindowActivity(videoMode_, windowTitle_)
 {
+    loadTextures();
     InnitGUI();
+
 }
 
 void Game::HandleInput()
@@ -129,32 +132,27 @@ void Game::Draw()
             window->draw(tile);
         }
     }
-    // Chess pieces
     
+    // chess pieces
     for (const auto& piece : chessBoard->getChessPieces()) {
-        sf::RectangleShape pawnShape(sf::Vector2f(TileSize / 2, TileSize / 2)); 
+        sf::Sprite pieceSprite;
 
         if(piece->isWhite)
-            pawnShape.setFillColor(sf::Color::Green);
+            pieceSprite.setTexture(pieceTextures[piece->GetType()].first);
         else
-            pawnShape.setFillColor(sf::Color::Black); 
-
-
-        pawnShape.setPosition(
-          
-            piece->GetPosition().x * TileSize + offsetXForChessBoard + TileSize / 4,
-            piece->GetPosition().y* TileSize + offsetYForChessBoard + TileSize / 4
-        );
-
-        window->draw(pawnShape); 
+            pieceSprite.setTexture(pieceTextures[piece->GetType()].second);
+        
+        pieceSprite.setPosition((piece->GetPosition().x * TileSize) + 260, (piece->GetPosition().y * TileSize + 25) );
+   
+        window->draw(pieceSprite);
     }
-    
     //left side menu 
+    
     sf::RectangleShape rectangle;
     rectangle.setSize(sf::Vector2f(203, 768));
     rectangle.setFillColor(sf::Color(17, 140, 202));  
     window->draw(rectangle);
-
+    
     //hovering tiles
     if (hoveredTileIndexes.x != -1 && hoveredTileIndexes.y != -1) {
         sf::RectangleShape highlightedTile(sf::Vector2f(TileSize, TileSize));
@@ -175,4 +173,20 @@ void Game::Run()
 void Game::InnitGUI()
 {
     chessBoard = &ChessBoard::getInstance();
+}
+
+void Game::loadTextures()
+{
+        pieceTextures[PieceType::Pawn].first.loadFromFile(".../../Img/Pawn_W.png");
+        pieceTextures[PieceType::Pawn].second.loadFromFile(".../../Img/Pawn_B.png");
+        pieceTextures[PieceType::Rook].first.loadFromFile(".../../Img/Rook_W.png");
+        pieceTextures[PieceType::Rook].second.loadFromFile(".../../Img/Rook_B.png");
+        pieceTextures[PieceType::Knight].first.loadFromFile(".../../Img/Knight_W.png");
+        pieceTextures[PieceType::Knight].second.loadFromFile(".../../Img/Knight_B.png");
+        pieceTextures[PieceType::Bishop].first.loadFromFile(".../../Img/Bishop_W.png");
+        pieceTextures[PieceType::Bishop].second.loadFromFile(".../../Img/Bishop_B.png");
+        pieceTextures[PieceType::Queen].first.loadFromFile(".../../Img/Queen_W.png");
+        pieceTextures[PieceType::Queen].second.loadFromFile(".../../Img/Queen_B.png");
+        pieceTextures[PieceType::King].first.loadFromFile(".../../Img/King_W.png");
+        pieceTextures[PieceType::King].second.loadFromFile(".../../Img/King_B.png");
 }

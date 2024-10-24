@@ -1,5 +1,7 @@
 #pragma once
 #include "IWindowActivity.h"
+#include "ChessPieces/PieceType.h"
+
 class Game : public IWindowActivity
 {
 	public:
@@ -7,6 +9,8 @@ class Game : public IWindowActivity
 		Game();
 		Game(sf::VideoMode videoMode_, sf::String windowTitle_);
 	private:
+		std::map<PieceType, std::pair<sf::Texture, sf::Texture>> pieceTextures;
+
 		const uint16_t offsetXForChessBoard = 254;
 		const uint16_t offsetYForChessBoard = 18;
 		const uint16_t TileSize = 75;
@@ -33,6 +37,7 @@ class Game : public IWindowActivity
 
 		void InnitGUI();
 
+		void loadTextures();
 	};
 
 

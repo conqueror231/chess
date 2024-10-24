@@ -1,12 +1,11 @@
 #pragma once
 #include "ChessPiece.h"
-class Bishop :
+class Queen :
     public ChessPiece
 {
 public:
-    Bishop(sf::Vector2i startPosition, bool isWhite)
-        : ChessPiece(startPosition, isWhite) {}
-
+    Queen(sf::Vector2i startPosition, PieceType pieceType, bool isWhite)
+        : ChessPiece(startPosition, pieceType, isWhite) {}
     bool Move(sf::Vector2i newPosition) override;
     bool Attack(ChessPiece& targetPiece) override;
 };

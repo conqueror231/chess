@@ -1,6 +1,6 @@
 #include "Pawn.h"
 #include "iostream"
-#include"ChessBoard.h"
+#include "../ChessBoard.h"
 
 bool Pawn::Move(sf::Vector2i newPosition)
 {

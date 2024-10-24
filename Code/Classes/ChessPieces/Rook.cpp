@@ -1,5 +1,6 @@
 #include "Rook.h"
-#include "ChessBoard.h"
+#include "../ChessBoard.h"
+#include <iostream>
 bool Rook::Move(sf::Vector2i newPosition)
 {
 	if(newPosition.y != this->position.y && newPosition.x != this->position.x)
@@ -11,6 +12,12 @@ bool Rook::Move(sf::Vector2i newPosition)
 
 bool Rook::Attack(ChessPiece& targetPiece)
 {
+	if (this->isWhite == targetPiece.isWhite)
+	{
+		std::cout << "Ally piece" << std::endl;
+		return false;
+
+	}
 	if (targetPiece.GetPosition().y != this->position.y && targetPiece.GetPosition().x != this->position.x)
 		return false;
 	this->position = targetPiece.GetPosition();
