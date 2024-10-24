@@ -1,6 +1,12 @@
 #pragma once
 #include "ChessPiece.h"
 #include "Pawn.h"
+#include "Rook.h"
+#include "Queen.h"
+#include "King.h"
+#include "Bishop.h"
+#include "Knight.h"
+
 
 class ChessBoard
 {

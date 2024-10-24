@@ -11,6 +11,40 @@ void ChessBoard::InnitChessBoard()
     for (int i = 0; i < 8; ++i) {
         ChessPieces.push_back(new Pawn(sf::Vector2i{ i, 6 }, true));
     }
+    // Black Rooks
+    ChessPieces.push_back(new Rook(sf::Vector2i{ 0, 0 }, false));
+    ChessPieces.push_back(new Rook(sf::Vector2i{ 7, 0 }, false));
+    // White Rooks
+    ChessPieces.push_back(new Rook(sf::Vector2i{ 7, 7 }, true));
+    ChessPieces.push_back(new Rook(sf::Vector2i{ 0, 7 }, true));
+
+    // Black Knights
+    ChessPieces.push_back(new Knight(sf::Vector2i{ 1, 0 }, false));
+    ChessPieces.push_back(new Knight(sf::Vector2i{ 6, 0 }, false));
+    // White Knights
+    ChessPieces.push_back(new Knight(sf::Vector2i{ 1, 7 }, true));
+    ChessPieces.push_back(new Knight(sf::Vector2i{ 6, 7 }, true));
+
+    // Black bishops
+    ChessPieces.push_back(new Bishop(sf::Vector2i{ 2, 0 }, false));
+    ChessPieces.push_back(new Bishop(sf::Vector2i{ 5, 0 }, false));
+
+    // White bishops
+    ChessPieces.push_back(new Bishop(sf::Vector2i{ 2, 7 }, true));
+    ChessPieces.push_back(new Bishop(sf::Vector2i{ 5, 7 }, true));
+
+    // Black Queen 
+    ChessPieces.push_back(new Queen(sf::Vector2i{ 3, 0 }, false));
+
+    //White Queen
+    ChessPieces.push_back(new Queen(sf::Vector2i{ 3, 7 }, true));
+
+    // Black King 
+    ChessPieces.push_back(new King(sf::Vector2i{ 4, 0 }, false));
+
+    // White King 
+    ChessPieces.push_back(new King(sf::Vector2i{ 4, 7 }, true));
+
 
 }
 
