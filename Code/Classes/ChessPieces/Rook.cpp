@@ -12,9 +12,61 @@ bool Rook::Move(sf::Vector2i newPosition)
 
 		std::vector<int> positions = ChessBoard::getInstance().
 			getPositionsOfAllPiecesOnDirection(Direction::Horizontal, this->position);
+		if (newPosition.x > this->position.x) {
+			int closestPos = 7;
+			for (int pos : positions) {
+				if (pos < closestPos && pos > this->position.x && pos != this->position.x)
+					closestPos = pos;
+			}
+			if (newPosition.x > closestPos) {
+				std::cout << "Another Figure on the way" << std::endl;
+				return false;
+			}
+		}
+		if (newPosition.x < this->position.x) {
+			int closestPos = 0;
+			for (int pos : positions) {
+				if (pos > closestPos && pos < this->position.x && pos != this->position.x)
+					closestPos = pos;
+			}
+			if (newPosition.x < closestPos) {
+				std::cout << "Another Figure on the way" << std::endl;
+				return false;
+			}
+		}
 
 	}
     
+	if (newPosition.y != this->position.y) {
+		std::vector<int> positions = ChessBoard::getInstance().
+			getPositionsOfAllPiecesOnDirection(Direction::Vertical , this->position);
+		
+		if (newPosition.y > this->position.y) {
+			int closestPos = 7;
+			for (int pos : positions) {
+				if (pos < closestPos && pos > this->position.y && pos != this->position.y)
+					closestPos = pos;
+			}
+			if (newPosition.y > closestPos) {
+				std::cout << "Another Figure on the way" << std::endl;
+				return false;
+			}
+		}
+		if (newPosition.y < this->position.y) {
+			int closestPos = 0;
+			for (int pos : positions) {
+				if (pos > closestPos && pos < this->position.y && pos != this->position.y)
+					closestPos = pos;
+			}
+			if (newPosition.y < closestPos) {
+				std::cout << "Another Figure on the way" << std::endl;
+				return false;
+			}
+		}
+
+
+	}
+
     this->position = newPosition;
     return true;
 	

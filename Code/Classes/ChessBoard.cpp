@@ -86,21 +86,23 @@ std::vector<int> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, s
     {
         for (ChessPiece* piece : ChessPieces ) 
         {
-            if (piece->GetPosition().x > innitPos.x || piece->GetPosition().x < innitPos.x) {
+            if (piece->GetPosition().y == innitPos.y) {
                 positions.push_back(piece->GetPosition().x);
-                return positions;
+               
             }
         }
-        
+        return positions;
     }
-    if (dir == Direction::Vertical) {
+    if (dir == Direction::Vertical)
+    {
         for (ChessPiece* piece : ChessPieces)
         {
-            if (piece->GetPosition().y > innitPos.y && piece->GetPosition().y < innitPos.y) {
+            if (piece->GetPosition().x == innitPos.x) {
                 positions.push_back(piece->GetPosition().y);
-                return positions;
+
             }
         }
+        return positions;
     }
     
 
