@@ -1,13 +1,23 @@
 #include "Rook.h"
 #include "../ChessBoard.h"
 #include <iostream>
+#include"vector"
+#include"../Direction.h"
 bool Rook::Move(sf::Vector2i newPosition)
 {
 	if(newPosition.y != this->position.y && newPosition.x != this->position.x)
 	return false;
 
-	this->position = newPosition;
-	return true;
+	if (newPosition.x != this->position.x) {
+
+		std::vector<int> positions = ChessBoard::getInstance().
+			getPositionsOfAllPiecesOnDirection(Direction::Horizontal, this->position);
+
+	}
+    
+    this->position = newPosition;
+    return true;
+	
 }
 
 bool Rook::Attack(ChessPiece& targetPiece)

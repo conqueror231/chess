@@ -6,7 +6,7 @@
 #include "ChessPieces/King.h"
 #include "ChessPieces/Bishop.h"
 #include "ChessPieces/Knight.h"
-
+#include"Direction.h"
 
 class ChessBoard
 {
@@ -32,5 +32,6 @@ public:
     const std::vector<ChessPiece*>& getChessPieces() const;
     ChessPiece* getChessPieceByPos(int x, int y) const;
     bool removeChessPiece(ChessPiece& chessPieceForDeleting);
+    std::vector<int> getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i pos);
 };
 

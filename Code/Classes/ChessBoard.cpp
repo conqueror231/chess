@@ -78,3 +78,33 @@ bool ChessBoard::removeChessPiece(ChessPiece& chessPieceForDeleting) {
     return false; 
 }
 
+std::vector<int> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i innitPos)
+{
+    std::vector<int> positions{};
+
+    if (dir == Direction::Horizontal)
+    {
+        for (ChessPiece* piece : ChessPieces ) 
+        {
+            if (piece->GetPosition().x > innitPos.x || piece->GetPosition().x < innitPos.x) {
+                positions.push_back(piece->GetPosition().x);
+                return positions;
+            }
+        }
+        
+    }
+    if (dir == Direction::Vertical) {
+        for (ChessPiece* piece : ChessPieces)
+        {
+            if (piece->GetPosition().y > innitPos.y && piece->GetPosition().y < innitPos.y) {
+                positions.push_back(piece->GetPosition().y);
+                return positions;
+            }
+        }
+    }
+    
+
+
+    return std::vector<int>();
+}
+

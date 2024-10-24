@@ -57,6 +57,9 @@
     <ClCompile Include="Code\Classes\ChessPieces\PieceType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Classes\Direction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Classes\IWindowActivity.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Code\Classes\ChessPieces\PieceType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Classes\Direction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

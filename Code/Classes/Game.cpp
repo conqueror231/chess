@@ -34,14 +34,6 @@ void Game::HandleInput()
             ChessPiece* selectedChessPiece = chessBoard->getChessPieceByPos(selectedTileIndexes.x, selectedTileIndexes.y);
             ChessPiece* clickedChessPiece = chessBoard->getChessPieceByPos(hoveredTileIndexes.x, hoveredTileIndexes.y);
             
-            if (selectedChessPiece) {
-                if (selectedChessPiece->isWhite) {
-                    std::cout << "White" << std::endl;
-                }
-                else {
-                    std::cout << "Black" << std::endl;
-                }
-          }
             if (selectedChessPiece && clickedChessPiece) {
                 if (selectedChessPiece->Attack(*clickedChessPiece))
                 {
