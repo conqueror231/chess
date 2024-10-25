@@ -2,11 +2,13 @@
 #include <vector>
 #include "PieceType.h"
 #include "SFML/System/Vector2.hpp"
+#include"../Direction.h"
 
 class ChessPiece {
 protected:
     sf::Vector2i position;
     PieceType pieceType;
+    bool IsPathClear(Direction dir, sf::Vector2i Position);
 
 public:
     bool isWhite = false;
@@ -23,4 +25,6 @@ public:
 
     virtual bool Move(sf::Vector2i newPosition) = 0; 
     virtual bool Attack(ChessPiece& targetPiece) = 0; 
+   
+
 };
