@@ -5,18 +5,33 @@
 bool Pawn::Move(sf::Vector2i newPosition)
 {
 	int distY = 1;
-	int dir = isWhite ? -1 : 1;
 
 	if (newPosition.x != this->position.x)
 		return false;
 
-	if(std::abs(std::abs(newPosition.y) - std::abs(this->GetPosition().y)) > distY)
+	int distanceToNewPos = std::abs(std::abs(newPosition.y) - std::abs(this->GetPosition().y));
+	if(distanceToNewPos > distY && isFirstMove == false)
 		return false;
+
+	if (isFirstMove && distanceToNewPos > 2) 
+		return false;
+	
+	if (distanceToNewPos == 2 && isFirstMove) {
+		int direction = isWhite ? 1 : -1;
+		if (ChessBoard::getInstance().IsTileHasFigureOnIt(newPosition.x, newPosition.y + direction)) {
+			std::cout << "Figure on the way" << std::endl;
+			return false;
+		}
+	}
+
+
 
 	if ((this->position.y < newPosition.y && isWhite) ||
 		(this->position.y > newPosition.y && !isWhite))
 		return false;
 
+
+	isFirstMove = false;
 	position = newPosition;
 	return true;
 }

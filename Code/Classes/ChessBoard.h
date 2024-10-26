@@ -29,6 +29,7 @@ public:
         static ChessBoard instance;
         return instance;
     }
+    bool IsTileHasFigureOnIt(int x, int y) const;
     const std::vector<ChessPiece*>& getChessPieces() const;
     ChessPiece* getChessPieceByPos(int x, int y) const;
     bool removeChessPiece(ChessPiece& chessPieceForDeleting);

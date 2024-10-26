@@ -3,7 +3,7 @@
 
 class Pawn : public ChessPiece {
 private:
-    bool isFirstMove;
+    bool isFirstMove = true;
 
 public:
     Pawn(sf::Vector2i startPosition, PieceType pieceType, bool isWhite)

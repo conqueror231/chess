@@ -55,6 +55,17 @@ const std::vector<ChessPiece*>& ChessBoard::getChessPieces() const
     return ChessPieces;
 }
 
+bool ChessBoard::IsTileHasFigureOnIt(int x, int y) const {
+
+    for (ChessPiece* piece : ChessPieces)
+    {
+        if (piece->GetPosition().x == x && piece->GetPosition().y == y) {
+            return true;
+        }
+    }
+    return false;
+}
+
 ChessPiece* ChessBoard::getChessPieceByPos(int x, int y) const
 {
     for (ChessPiece* piece : ChessPieces)
