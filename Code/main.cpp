@@ -11,7 +11,7 @@ int main()
     WStateManager->InnitWindow({ 1024,768 }, "Main Menu");
 
     WStateManager->createMenu();
- 
+    
   
 
     return 0;

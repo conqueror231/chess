@@ -2,7 +2,8 @@
 #include "ChessPiece.h"
 
 class Pawn : public ChessPiece {
-
+private:
+    bool isFirstMove;
 
 public:
     Pawn(sf::Vector2i startPosition, PieceType pieceType, bool isWhite)

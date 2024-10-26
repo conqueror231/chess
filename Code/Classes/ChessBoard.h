@@ -32,6 +32,6 @@ public:
     const std::vector<ChessPiece*>& getChessPieces() const;
     ChessPiece* getChessPieceByPos(int x, int y) const;
     bool removeChessPiece(ChessPiece& chessPieceForDeleting);
-    std::vector<int> getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i pos);
+    std::vector<sf::Vector2i> getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i pos);
 };
 

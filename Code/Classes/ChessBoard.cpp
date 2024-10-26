@@ -78,17 +78,17 @@ bool ChessBoard::removeChessPiece(ChessPiece& chessPieceForDeleting) {
     return false; 
 }
 
-std::vector<int> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i innitPos)
+std::vector<sf::Vector2i> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i innitPos)
 {
-    std::vector<int> positions{};
+    std::vector<sf::Vector2i> positions{};
 
     if (dir == Direction::Horizontal)
     {
-        for (ChessPiece* piece : ChessPieces ) 
+        for (ChessPiece* piece : ChessPieces)
         {
             if (piece->GetPosition().y == innitPos.y) {
-                positions.push_back(piece->GetPosition().x);
-               
+                positions.push_back(piece->GetPosition());
+
             }
         }
         return positions;
@@ -98,15 +98,21 @@ std::vector<int> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, s
         for (ChessPiece* piece : ChessPieces)
         {
             if (piece->GetPosition().x == innitPos.x) {
-                positions.push_back(piece->GetPosition().y);
+                positions.push_back(piece->GetPosition());
 
             }
         }
-        return positions;
-    }
-    
+    return positions;
+        }
+    if (dir == Direction::Diagonal) {
+            for (ChessPiece* piece : ChessPieces) {
+                int dx = abs(piece->GetPosition().x - innitPos.x);
+                int dy = abs(piece->GetPosition().y - innitPos.y);
+                if (dx == dy) {
+                    positions.push_back(piece->GetPosition());
+                }
+            }
+            return positions;
+        }
 
-
-    return std::vector<int>();
 }
-

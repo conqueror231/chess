@@ -5,7 +5,7 @@ void WindowStateManager::InnitWindow(sf::VideoMode WindowSize, sf::String title)
 {
 	if (window)
 		return;
-	window = std::make_unique<sf::RenderWindow>(WindowSize, title);
+	window = std::make_unique<sf::RenderWindow>(WindowSize, title, sf::Style::Close);
 }
 sf::RenderWindow& WindowStateManager::GetWindow()
 {

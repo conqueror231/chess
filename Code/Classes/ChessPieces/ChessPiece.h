@@ -10,6 +10,11 @@ protected:
     PieceType pieceType;
     bool IsPathClear(Direction dir, sf::Vector2i Position);
 
+    bool canMoveHorizontal = false;
+    bool canMoveVertical = false;
+    bool canMoveDiagonal = false;
+
+
 public:
     bool isWhite = false;
 
@@ -23,8 +28,8 @@ public:
         return pieceType;
     }
 
-    virtual bool Move(sf::Vector2i newPosition) = 0; 
+    virtual bool Move(sf::Vector2i newPosition);
     virtual bool Attack(ChessPiece& targetPiece) = 0; 
-   
+
 
 };
