@@ -7,5 +7,4 @@ public:
     King(sf::Vector2i startPosition, PieceType pieceType, bool isWhite)
         : ChessPiece(startPosition, pieceType, isWhite) {}
     bool CanMoveTo(sf::Vector2i newPosition) override;
-    bool Attack(ChessPiece& targetPiece) override;
 };

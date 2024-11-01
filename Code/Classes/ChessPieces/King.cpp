@@ -19,18 +19,4 @@ bool King::CanMoveTo(sf::Vector2i newPosition)
     return false;
 }
 
-bool King::Attack(ChessPiece& targetPiece)
-{
-	if (this->isWhite == targetPiece.isWhite)
-	{
-		std::cout << "Ally piece" << std::endl;
-		return false;
 
-	}
-	if (Move(targetPiece.GetPosition()))
-		ChessBoard::getInstance().removeChessPiece(targetPiece);
-
-
-	return true;
-
-}

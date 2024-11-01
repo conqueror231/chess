@@ -84,10 +84,6 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
     return true;
 }
 
-
-
-
-
 bool ChessPiece::Move(sf::Vector2i newPosition)
 {
 	if (CanMoveTo(newPosition)  == false)
@@ -130,6 +126,30 @@ bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 	return false;
 }
 
+bool ChessPiece::CanAttack(ChessPiece& targetPiece)
+{
+	if (this->isWhite == targetPiece.isWhite)
+	{
+		std::cout << "Ally piece" << std::endl;
+		return false;
+	}
+
+	if (CanMoveTo(targetPiece.GetPosition()) == false)
+		return false;
+
+	return true;
+}
+
+bool ChessPiece::Attack(ChessPiece& targetPiece)
+{
+	if (CanAttack(targetPiece) == false)
+		return false;
+
+
+	this->position = targetPiece.GetPosition();
+	ChessBoard::getInstance().removeChessPiece(targetPiece);
+	return true;
+}
 
 bool ChessPiece::isKingInCheck(sf::Vector2i newPosition)
 {

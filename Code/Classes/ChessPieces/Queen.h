@@ -10,7 +10,6 @@ public:
         canMoveHorizontal = true;
         canMoveVertical = true;
     }
-    bool CanMoveTo(sf::Vector2i newPosition) override;
-    bool Attack(ChessPiece& targetPiece) override;
+
 };
 

@@ -14,13 +14,3 @@ bool Knight::CanMoveTo(sf::Vector2i newPosition)
     return false;
 
 }
-
-bool Knight::Attack(ChessPiece& targetPiece)
-{
-    if(Move(targetPiece.GetPosition())){
-        ChessBoard::getInstance().removeChessPiece(targetPiece);
-        return true;
-    }
-
-    return false;
-}

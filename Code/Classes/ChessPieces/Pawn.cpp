@@ -38,7 +38,7 @@ bool Pawn::CanMoveTo(sf::Vector2i newPosition)
 	return true;
 }
 
-bool Pawn::Attack(ChessPiece& targetPiece)
+bool Pawn::CanAttack(ChessPiece& targetPiece)
 {
 	int distX = 1;
 	int distY = 1;
@@ -55,7 +55,6 @@ bool Pawn::Attack(ChessPiece& targetPiece)
 	{
 		if (isKingInCheck(targetPos))
 			return false;
-		this->position = targetPos;
 		ChessBoard::getInstance().removeChessPiece(targetPiece);
 		return true;  
 	}

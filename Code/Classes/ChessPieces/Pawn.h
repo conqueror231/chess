@@ -10,5 +10,5 @@ public:
         : ChessPiece(startPosition, pieceType, isWhite) {}
 
     bool CanMoveTo(sf::Vector2i newPosition) override;
-    bool Attack(ChessPiece& targetPiece) override;
+    bool CanAttack(ChessPiece& targetPiece) override;
 };
