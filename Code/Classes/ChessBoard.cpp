@@ -127,3 +127,24 @@ std::vector<sf::Vector2i> ChessBoard::getPositionsOfAllPiecesOnDirection(Directi
         }
 
 }
+
+bool ChessBoard::isKingInCheck(bool isWhite) const {
+    ChessPiece* king = nullptr;
+    for (ChessPiece* piece : ChessPieces) {
+        if (piece->GetType() == PieceType::King && piece->isWhite == isWhite) {
+            king = piece;
+            break;
+        }
+    }
+
+    if (king) {
+        sf::Vector2i kingPos = king->GetPosition();
+        for (ChessPiece* piece : ChessPieces) {
+            if (piece->isWhite != isWhite && piece->Attack(*king)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+

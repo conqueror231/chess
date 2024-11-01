@@ -6,7 +6,7 @@ bool Bishop::Move(sf::Vector2i newPosition)
         return false;
 
     this->position = newPosition;
-    return false;
+    return true;
 }
 
 bool Bishop::Attack(ChessPiece& targetPiece)

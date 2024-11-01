@@ -28,6 +28,7 @@ public:
         return pieceType;
     }
 
+    bool isKingInCheck(sf::Vector2i newPosition);
     virtual bool Move(sf::Vector2i newPosition);
     virtual bool Attack(ChessPiece& targetPiece) = 0; 
 

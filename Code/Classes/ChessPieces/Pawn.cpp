@@ -16,6 +16,7 @@ bool Pawn::Move(sf::Vector2i newPosition)
 	if (isFirstMove && distanceToNewPos > 2) 
 		return false;
 	
+
 	if (distanceToNewPos == 2 && isFirstMove) {
 		int direction = isWhite ? 1 : -1;
 		if (ChessBoard::getInstance().IsTileHasFigureOnIt(newPosition.x, newPosition.y + direction)) {
@@ -30,6 +31,8 @@ bool Pawn::Move(sf::Vector2i newPosition)
 		(this->position.y > newPosition.y && !isWhite))
 		return false;
 
+	if (isKingInCheck(newPosition))
+		return false;
 
 	isFirstMove = false;
 	position = newPosition;
@@ -51,8 +54,9 @@ bool Pawn::Attack(ChessPiece& targetPiece)
 	if ((targetPos.x == this->position.x + distX || targetPos.x == this->position.x - distX) &&
 		targetPos.y == this->position.y + distY * dir)
 	{
+		if (isKingInCheck(targetPos))
+			return false;
 		this->position = targetPos;
-	
 		ChessBoard::getInstance().removeChessPiece(targetPiece);
 		return true;  
 	}

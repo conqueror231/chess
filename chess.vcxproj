@@ -156,6 +156,8 @@
     <ClCompile Include="Code\Classes\ChessPieces\Knight.cpp" />
     <ClCompile Include="Code\Classes\ChessPieces\PieceType.cpp" />
     <ClCompile Include="Code\Classes\Direction.cpp" />
+    <ClCompile Include="Code\Classes\GameMode.cpp" />
+    <ClCompile Include="Code\Classes\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Classes\ChessPieces\Bishop.h" />
@@ -172,6 +174,8 @@
     <ClInclude Include="Code\Classes\ChessPieces\Knight.h" />
     <ClInclude Include="Code\Classes\ChessPieces\PieceType.h" />
     <ClInclude Include="Code\Classes\Direction.h" />
+    <ClInclude Include="Code\Classes\GameMode.h" />
+    <ClInclude Include="Code\Classes\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

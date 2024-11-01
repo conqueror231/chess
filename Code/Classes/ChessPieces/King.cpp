@@ -8,7 +8,10 @@ bool King::Move(sf::Vector2i newPosition)
     int distanceY = std::abs(newPosition.y - this->position.y);
 
     if ((distanceX == 1 && distanceY == 0) || (distanceX == 0 && distanceY == 1) || (distanceX == 1 && distanceY == 1))
-    {
+	{
+		if (isKingInCheck(newPosition)) {
+			return false;
+		}
         this->position = newPosition;
         return true;
     }

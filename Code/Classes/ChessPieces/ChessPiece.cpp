@@ -87,6 +87,7 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 
 
 
+
 bool ChessPiece::Move(sf::Vector2i newPosition)
 {
 
@@ -112,6 +113,27 @@ bool ChessPiece::Move(sf::Vector2i newPosition)
 	if (isDiagonalMove && !IsPathClear(Direction::Diagonal, newPosition))
 		return false;
 
+	if (isKingInCheck(newPosition)) 
+		return false;
+	
+
 	this->position = newPosition;
 	return true;
 }
+
+
+bool ChessPiece::isKingInCheck(sf::Vector2i newPosition)
+{
+	sf::Vector2i oldPos = this->position;
+	/*
+	this->position = newPosition;
+	if (ChessBoard::getInstance().isKingInCheck(isWhite)) {
+		this->position = oldPos;
+		return true;
+	}
+	
+	return false;
+	*/
+	return false;
+}
+
