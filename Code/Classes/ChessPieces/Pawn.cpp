@@ -55,7 +55,6 @@ bool Pawn::CanAttack(ChessPiece& targetPiece)
 	{
 		if (isKingInCheck(targetPos))
 			return false;
-		ChessBoard::getInstance().removeChessPiece(targetPiece);
 		return true;  
 	}
 

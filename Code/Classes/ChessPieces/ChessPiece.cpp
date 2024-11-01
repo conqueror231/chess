@@ -89,7 +89,6 @@ bool ChessPiece::Move(sf::Vector2i newPosition)
 	if (CanMoveTo(newPosition)  == false)
 		return false;
 
-
 	this->position = newPosition;
 }
 
