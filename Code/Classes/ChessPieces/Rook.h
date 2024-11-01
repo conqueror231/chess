@@ -10,7 +10,7 @@ public:
         canMoveVertical = true;
     }
 
-    bool Move(sf::Vector2i newPosition) override;
+    bool CanMoveTo(sf::Vector2i newPosition) override;
     bool Attack(ChessPiece& targetPiece) override;
 
 };

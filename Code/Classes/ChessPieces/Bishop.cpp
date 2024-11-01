@@ -1,11 +1,10 @@
 #include "Bishop.h"
 #include"../ChessBoard.h"
-bool Bishop::Move(sf::Vector2i newPosition)
+bool Bishop::CanMoveTo(sf::Vector2i newPosition)
 {
-    if (ChessPiece::Move(newPosition) == false)
+    if (ChessPiece::CanMoveTo(newPosition) == false)
         return false;
 
-    this->position = newPosition;
     return true;
 }
 

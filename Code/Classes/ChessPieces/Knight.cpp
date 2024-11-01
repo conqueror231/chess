@@ -1,6 +1,6 @@
 #include "Knight.h"
 #include "../ChessBoard.h"
-bool Knight::Move(sf::Vector2i newPosition)
+bool Knight::CanMoveTo(sf::Vector2i newPosition)
 {
 
     int dx = std::abs(newPosition.x - this->position.x);
@@ -8,7 +8,6 @@ bool Knight::Move(sf::Vector2i newPosition)
 
    
     if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2)) {
-        this->position = newPosition;
         return true;
     }
 

@@ -90,7 +90,15 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 
 bool ChessPiece::Move(sf::Vector2i newPosition)
 {
+	if (CanMoveTo(newPosition)  == false)
+		return false;
 
+
+	this->position = newPosition;
+}
+
+bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
+{
 	bool isHorizontalMove = (newPosition.y == this->position.y);
 	bool isVerticalMove = (newPosition.x == this->position.x);
 	bool isDiagonalMove = (std::abs(newPosition.x - this->position.x) == std::abs(newPosition.y - this->position.y));
@@ -113,12 +121,13 @@ bool ChessPiece::Move(sf::Vector2i newPosition)
 	if (isDiagonalMove && !IsPathClear(Direction::Diagonal, newPosition))
 		return false;
 
-	if (isKingInCheck(newPosition)) 
+	if (isKingInCheck(newPosition))
 		return false;
-	
 
-	this->position = newPosition;
+
+
 	return true;
+	return false;
 }
 
 
@@ -131,9 +140,8 @@ bool ChessPiece::isKingInCheck(sf::Vector2i newPosition)
 		this->position = oldPos;
 		return true;
 	}
-	
-	return false;
 	*/
 	return false;
+
 }
 

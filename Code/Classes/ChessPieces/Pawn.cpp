@@ -2,7 +2,7 @@
 #include "iostream"
 #include "../ChessBoard.h"
 
-bool Pawn::Move(sf::Vector2i newPosition)
+bool Pawn::CanMoveTo(sf::Vector2i newPosition)
 {
 	int distY = 1;
 
@@ -35,7 +35,6 @@ bool Pawn::Move(sf::Vector2i newPosition)
 		return false;
 
 	isFirstMove = false;
-	position = newPosition;
 	return true;
 }
 

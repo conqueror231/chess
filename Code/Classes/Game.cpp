@@ -160,24 +160,25 @@ void Game::Draw()
         window->draw(highlightedTile);
     }
     for (int i = 0; i < 8; ++i) {
-        // Row numbers (1-8)
         sf::Text rowLabel;
         rowLabel.setFont(font);
-        rowLabel.setString(std::to_string(8 - i)); // Display 8 at the top, 1 at the bottom
+        rowLabel.setString(std::to_string(8 - i)); 
         rowLabel.setCharacterSize(24);
         rowLabel.setFillColor(sf::Color::Black);
         rowLabel.setPosition(offsetXForChessBoard - 30, i * TileSize + offsetYForChessBoard + TileSize / 4);
         window->draw(rowLabel);
 
-        // Column letters (A-H)
         sf::Text colLabel;
         colLabel.setFont(font);
-        colLabel.setString(std::string(1, 'A' + i)); // Display A on the left, H on the right
+        colLabel.setString(std::string(1, 'A' + i)); 
         colLabel.setCharacterSize(24);
         colLabel.setFillColor(sf::Color::Black);
         colLabel.setPosition(i * TileSize + offsetXForChessBoard + TileSize / 3, offsetYForChessBoard + 8 * TileSize);
         window->draw(colLabel);
     }
+
+
+
     window->display();
 }
 

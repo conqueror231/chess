@@ -1,7 +1,7 @@
 #include "King.h"
 #include <iostream>
 #include "../ChessBoard.h"
-bool King::Move(sf::Vector2i newPosition)
+bool King::CanMoveTo(sf::Vector2i newPosition)
 {
 
     int distanceX = std::abs(newPosition.x - this->position.x);
@@ -12,7 +12,6 @@ bool King::Move(sf::Vector2i newPosition)
 		if (isKingInCheck(newPosition)) {
 			return false;
 		}
-        this->position = newPosition;
         return true;
     }
 

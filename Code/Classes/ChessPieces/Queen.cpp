@@ -1,12 +1,11 @@
 #include "Queen.h"
 #include <iostream>
 #include "../ChessBoard.h"
-bool Queen::Move(sf::Vector2i newPosition)
+bool Queen::CanMoveTo(sf::Vector2i newPosition)
 {
-	if (ChessPiece::Move(newPosition) == false)
+	if (ChessPiece::CanMoveTo(newPosition) == false)
 		return false;
 
-    this->position = newPosition;
     return true;
 }
 bool Queen::Attack(ChessPiece& targetPiece)

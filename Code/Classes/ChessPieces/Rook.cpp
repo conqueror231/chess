@@ -3,13 +3,12 @@
 #include <iostream>
 #include"vector"
 #include"../Direction.h"
-bool Rook::Move(sf::Vector2i newPosition)
+bool Rook::CanMoveTo(sf::Vector2i newPosition)
 {
-	if (ChessPiece::Move(newPosition) == false)
+	if (ChessPiece::CanMoveTo(newPosition) == false)
 		return false;
 
 
-    this->position = newPosition;
     return true;
 	
 }
