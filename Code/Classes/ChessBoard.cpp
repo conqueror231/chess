@@ -129,7 +129,7 @@ std::vector<sf::Vector2i> ChessBoard::getPositionsOfAllPiecesOnDirection(Directi
 
 }
 
-bool ChessBoard::isKingInCheck(bool isWhite, ChessPiece& exeptionPiece) const {
+bool ChessBoard::isKingInCheck(bool isWhite, ChessPiece* exceptionPiece) const {
     ChessPiece* king = nullptr;
     for (ChessPiece* piece : ChessPieces) {
         if (piece->GetType() == PieceType::King && piece->isWhite == isWhite) {
@@ -139,41 +139,12 @@ bool ChessBoard::isKingInCheck(bool isWhite, ChessPiece& exeptionPiece) const {
     }
 
     if (king) {
-        sf::Vector2i kingPos = king->GetPosition();
         for (ChessPiece* piece : ChessPieces) {
-            if (piece == &exeptionPiece) {
-                std::cout << "Exeption Piece :(" << piece->GetPosition().x << ", " << piece->GetPosition().y << ")" << std::endl;
-                continue;
-            }
-
-                if (piece->isWhite != isWhite && piece->CanAttack(*king)) {
-                    return true;
-          
-            }
-        }
-    }
-    return false;
-}
-
-bool ChessBoard::isKingInCheck(bool isWhite) const
-{
-    ChessPiece* king = nullptr;
-    for (ChessPiece* piece : ChessPieces) {
-        if (piece->GetType() == PieceType::King && piece->isWhite == isWhite) {
-            king = piece;
-            break;
-        }
-    }
-
-    if (king) {
-        sf::Vector2i kingPos = king->GetPosition();
-        for (ChessPiece* piece : ChessPieces) {
+            if (piece == exceptionPiece) continue;
             if (piece->isWhite != isWhite && piece->CanAttack(*king)) {
                 return true;
-
             }
         }
     }
     return false;
 }
-

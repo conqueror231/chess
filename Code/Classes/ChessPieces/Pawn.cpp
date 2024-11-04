@@ -53,7 +53,7 @@ bool Pawn::CanAttack(ChessPiece& targetPiece)
 	if ((targetPos.x == this->position.x + distX || targetPos.x == this->position.x - distX) &&
 		targetPos.y == this->position.y + distY * dir)
 	{
-		if (isKingInCheck(targetPos, targetPiece))
+		if (isKingInCheck(targetPos, &targetPiece))
 			return false;
 		return true;  
 	}

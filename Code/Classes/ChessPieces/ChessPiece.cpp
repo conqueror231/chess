@@ -147,7 +147,7 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 	if (CanAttack(targetPiece) == false)
 		return false;
 
-	if (isKingInCheck(targetPiece.GetPosition(), targetPiece)) {
+	if (isKingInCheck(targetPiece.GetPosition(), &targetPiece)) {
 		return false;
 	}
 
@@ -156,22 +156,8 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 	return true;
 }
 
-bool ChessPiece::isKingInCheck(sf::Vector2i newPosition)
-{
-	sf::Vector2i oldPos = this->position;
-	this->position = newPosition;
 
-	if (ChessBoard::getInstance().isKingInCheck(isWhite)) {
-		this->position = oldPos;
-		return true;
-	}
-	this->position = oldPos;
-
-	return false;
-
-}
-
-bool ChessPiece::isKingInCheck(sf::Vector2i newPosition, ChessPiece& exeptionPiece)
+bool ChessPiece::isKingInCheck(sf::Vector2i newPosition, ChessPiece* exeptionPiece)
 {
 	sf::Vector2i oldPos = this->position;
 	this->position = newPosition;

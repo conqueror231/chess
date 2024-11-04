@@ -34,7 +34,6 @@ public:
     ChessPiece* getChessPieceByPos(int x, int y) const;
     bool removeChessPiece(ChessPiece& chessPieceForDeleting);
     std::vector<sf::Vector2i> getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i pos);
-    bool isKingInCheck(bool isWhite, ChessPiece & exeptPiece) const;
-    bool isKingInCheck(bool isWhite) const;
+    bool isKingInCheck(bool isWhite, ChessPiece* exceptionPiece = nullptr) const;
 };
 
