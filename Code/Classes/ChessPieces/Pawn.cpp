@@ -20,7 +20,7 @@ bool Pawn::CanMoveTo(sf::Vector2i newPosition)
 	if (distanceToNewPos == 2 && isFirstMove) {
 		int direction = isWhite ? 1 : -1;
 		if (ChessBoard::getInstance().IsTileHasFigureOnIt(newPosition.x, newPosition.y + direction)) {
-			std::cout << "Figure on the way" << std::endl;
+		//	std::cout << "Figure on the way" << std::endl;
 			return false;
 		}
 	}
@@ -44,7 +44,7 @@ bool Pawn::CanAttack(ChessPiece& targetPiece)
 	int distY = 1;
 	if (this->isWhite == targetPiece.isWhite)
 	{
-		std::cout << "Ally piece" << std::endl;
+		//std::cout << "Ally piece" << std::endl;
 		return false;
 
 	}
@@ -53,11 +53,11 @@ bool Pawn::CanAttack(ChessPiece& targetPiece)
 	if ((targetPos.x == this->position.x + distX || targetPos.x == this->position.x - distX) &&
 		targetPos.y == this->position.y + distY * dir)
 	{
-		if (isKingInCheck(targetPos))
+		if (isKingInCheck(targetPos, targetPiece))
 			return false;
 		return true;  
 	}
 
-	std::cout << "Can't attack" << std::endl;
+	//std::cout << "Can't attack" << std::endl;
 	return false;
 }

@@ -15,7 +15,7 @@ bool King::CanMoveTo(sf::Vector2i newPosition)
         return true;
     }
 
-	std::cout << "Invalid move" << std::endl;
+//	std::cout << "Invalid move" << std::endl;
     return false;
 }
 

@@ -86,14 +86,18 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 
 bool ChessPiece::Move(sf::Vector2i newPosition)
 {
-	if (CanMoveTo(newPosition)  == false)
+	if (CanMoveTo(newPosition) == false) {
 		return false;
-
+	}
+	if (isKingInCheck(newPosition))
+		return false;
 	this->position = newPosition;
+	return true;
 }
 
 bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 {
+
 	bool isHorizontalMove = (newPosition.y == this->position.y);
 	bool isVerticalMove = (newPosition.x == this->position.x);
 	bool isDiagonalMove = (std::abs(newPosition.x - this->position.x) == std::abs(newPosition.y - this->position.y));
@@ -101,11 +105,11 @@ bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 	if ((isHorizontalMove && !canMoveHorizontal) ||
 		(isVerticalMove && !canMoveVertical) ||
 		(isDiagonalMove && !canMoveDiagonal)) {
-		std::cout << "Invalid move for this piece" << std::endl;
+	//	std::cout << "Invalid move for this piece" << std::endl;
 		return false;
 	}
 	if (isHorizontalMove == false && isVerticalMove == false && isDiagonalMove == false) {
-		std::cout << "Invalid move for this piece" << std::endl;
+		//std::cout << "Invalid move for this piece" << std::endl;
 		return false;
 	}
 
@@ -116,25 +120,24 @@ bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 	if (isDiagonalMove && !IsPathClear(Direction::Diagonal, newPosition))
 		return false;
 
-	if (isKingInCheck(newPosition))
-		return false;
+
 
 
 
 	return true;
-	return false;
 }
 
 bool ChessPiece::CanAttack(ChessPiece& targetPiece)
 {
 	if (this->isWhite == targetPiece.isWhite)
 	{
-		std::cout << "Ally piece" << std::endl;
+		//std::cout << "Ally piece" << std::endl;
 		return false;
 	}
 
 	if (CanMoveTo(targetPiece.GetPosition()) == false)
 		return false;
+
 
 	return true;
 }
@@ -144,6 +147,9 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 	if (CanAttack(targetPiece) == false)
 		return false;
 
+	if (isKingInCheck(targetPiece.GetPosition(), targetPiece)) {
+		return false;
+	}
 
 	this->position = targetPiece.GetPosition();
 	ChessBoard::getInstance().removeChessPiece(targetPiece);
@@ -153,14 +159,30 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 bool ChessPiece::isKingInCheck(sf::Vector2i newPosition)
 {
 	sf::Vector2i oldPos = this->position;
-	/*
 	this->position = newPosition;
+
 	if (ChessBoard::getInstance().isKingInCheck(isWhite)) {
 		this->position = oldPos;
 		return true;
 	}
-	*/
+	this->position = oldPos;
+
 	return false;
 
+}
+
+bool ChessPiece::isKingInCheck(sf::Vector2i newPosition, ChessPiece& exeptionPiece)
+{
+	sf::Vector2i oldPos = this->position;
+	this->position = newPosition;
+
+	if (ChessBoard::getInstance().isKingInCheck(isWhite, exeptionPiece)) {
+		this->position = oldPos;
+		std::cout << "king will be in check" << std::endl;
+		return true;
+	}
+	this->position = oldPos;
+
+	return false;
 }
 

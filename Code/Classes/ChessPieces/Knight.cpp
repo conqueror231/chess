@@ -8,6 +8,10 @@ bool Knight::CanMoveTo(sf::Vector2i newPosition)
 
    
     if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2)) {
+
+        if (isKingInCheck(newPosition))
+            return false;
+
         return true;
     }
 

@@ -27,8 +27,8 @@ public:
     PieceType GetType() const {
         return pieceType;
     }
-
     bool isKingInCheck(sf::Vector2i newPosition);
+    bool isKingInCheck(sf::Vector2i newPosition, ChessPiece& exeptionPiece);
     virtual bool Move(sf::Vector2i newPosition);
     virtual bool CanMoveTo(sf::Vector2i newPosition);
     virtual bool CanAttack(ChessPiece& targetPiece);
