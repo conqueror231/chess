@@ -13,7 +13,7 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 					closestPos = pos.x;
 			}
 			if (targetPos.x > closestPos) {
-				std::cout << "Another Figure on the way" << std::endl;
+				//std::cout << "Another Figure on the way" << std::endl;
 				return false;
 			}
 		}
@@ -24,13 +24,12 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 					closestPos = pos.x;
 			}
 			if (targetPos.x < closestPos) {
-				std::cout << "Another Figure on the way" << std::endl;
+				//std::cout << "Another Figure on the way" << std::endl;
 				return false;
 			}
 		}
 
     }
-
 	if (dir == Direction::Vertical) {
 		
 			std::vector<sf::Vector2i> positions = ChessBoard::getInstance().
@@ -43,7 +42,7 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 						closestPos = pos.y;
 				}
 				if (targetPos.y > closestPos) {
-					std::cout << "Another Figure on the way" << std::endl;
+					//std::cout << "Another Figure on the way" << std::endl;
 					return false;
 				}
 			}
@@ -54,32 +53,39 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 						closestPos = pos.y;
 				}
 				if (targetPos.y < closestPos) {
-					std::cout << "Another Figure on the way" << std::endl;
+					//std::cout << "Another Figure on the way" << std::endl;
 					return false;
 				}
 			}
 
 
 	}
-	
 	if (dir == Direction::Diagonal) {
-		
-		std::vector<sf::Vector2i> positions = ChessBoard::getInstance().
-			getPositionsOfAllPiecesOnDirection(Direction::Diagonal, this->position);
 
 		int dx = (targetPos.x > this->position.x) ? 1 : -1;
 		int dy = (targetPos.y > this->position.y) ? 1 : -1;
+
+
 		sf::Vector2i checkPos = this->position;
 
 
-		while ((checkPos.x += dx) != targetPos.x && (checkPos.y += dy) != targetPos.y) {
-			if (std::find(positions.begin(), positions.end(), checkPos) != positions.end()) {
-				std::cout << "Another Figure on the way diagonally" << std::endl;
+		while (checkPos.x != targetPos.x && checkPos.y != targetPos.y) {
+	
+			checkPos.x += dx;
+			checkPos.y += dy;
+
+			if (checkPos.x < 0 || checkPos.y < 0)
+				break;
+
+			if (checkPos.x == targetPos.x && checkPos.y == targetPos.y)
+				break;
+		
+			if (ChessPiece* piece = ChessBoard::getInstance().getChessPieceByPos(checkPos.x, checkPos.y)) {
+			
 				return false;
 			}
 		}
 	}
-	
 
     return true;
 }
@@ -91,42 +97,29 @@ bool ChessPiece::Move(sf::Vector2i newPosition)
 	}
 	if (isKingInCheck(newPosition))
 		return false;
+
 	this->position = newPosition;
 	return true;
 }
-
 bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 {
-
 	bool isHorizontalMove = (newPosition.y == this->position.y);
 	bool isVerticalMove = (newPosition.x == this->position.x);
 	bool isDiagonalMove = (std::abs(newPosition.x - this->position.x) == std::abs(newPosition.y - this->position.y));
 
 	if ((isHorizontalMove && !canMoveHorizontal) ||
 		(isVerticalMove && !canMoveVertical) ||
-		(isDiagonalMove && !canMoveDiagonal)) {
-	//	std::cout << "Invalid move for this piece" << std::endl;
-		return false;
-	}
-	if (isHorizontalMove == false && isVerticalMove == false && isDiagonalMove == false) {
-		//std::cout << "Invalid move for this piece" << std::endl;
+		(isDiagonalMove && !canMoveDiagonal) ||
+		(!isHorizontalMove && !isVerticalMove && !isDiagonalMove)) {
 		return false;
 	}
 
-	if (isHorizontalMove && !IsPathClear(Direction::Horizontal, newPosition))
-		return false;
-	if (isVerticalMove && !IsPathClear(Direction::Vertical, newPosition))
-		return false;
-	if (isDiagonalMove && !IsPathClear(Direction::Diagonal, newPosition))
-		return false;
-
-
-
-
+	if (isHorizontalMove && !IsPathClear(Direction::Horizontal, newPosition)) return false;
+	if (isVerticalMove && !IsPathClear(Direction::Vertical, newPosition)) return false;
+	if (isDiagonalMove && !IsPathClear(Direction::Diagonal, newPosition)) return false;
 
 	return true;
 }
-
 bool ChessPiece::CanAttack(ChessPiece& targetPiece)
 {
 	if (this->isWhite == targetPiece.isWhite)
@@ -141,7 +134,6 @@ bool ChessPiece::CanAttack(ChessPiece& targetPiece)
 
 	return true;
 }
-
 bool ChessPiece::Attack(ChessPiece& targetPiece)
 {
 	if (CanAttack(targetPiece) == false)
@@ -155,8 +147,6 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 	ChessBoard::getInstance().removeChessPiece(targetPiece);
 	return true;
 }
-
-
 bool ChessPiece::isKingInCheck(sf::Vector2i newPosition, ChessPiece* exeptionPiece)
 {
 	sf::Vector2i oldPos = this->position;
@@ -164,7 +154,7 @@ bool ChessPiece::isKingInCheck(sf::Vector2i newPosition, ChessPiece* exeptionPie
 
 	if (ChessBoard::getInstance().isKingInCheck(isWhite, exeptionPiece)) {
 		this->position = oldPos;
-		std::cout << "king will be in check" << std::endl;
+		//std::cout << "king will be in check" << std::endl;
 		return true;
 	}
 	this->position = oldPos;

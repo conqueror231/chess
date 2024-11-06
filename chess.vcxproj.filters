@@ -57,9 +57,6 @@
     <ClCompile Include="Code\Classes\ChessPieces\PieceType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Classes\Direction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Classes\GameMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

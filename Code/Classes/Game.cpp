@@ -1,7 +1,10 @@
 #include "Game.h"
 #include "WindowStateManager.h"
 #include "ChessBoard.h"
+#include "GameMode.h"
 #include <iostream>
+const sf::Vector2f Game::TURN_LABEL_POSITION(875, 20);
+
 
 Game::Game()
 {
@@ -16,58 +19,65 @@ Game::Game(sf::VideoMode videoMode_, sf::String windowTitle_)
     InnitGUI();
 
 }
-
-void Game::HandleInput()
-{
+void Game::HandleInput() {
     sf::Event event;
-    while (window->pollEvent(event))
-    {
+    while (window->pollEvent(event)) {
         static sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
         static sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8,
-                                                        offsetYForChessBoard + TileSize * 8);
+            offsetYForChessBoard + TileSize * 8);
         sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
         if (isMouseInChessBoard(mousePos, chessBoardStartPos, chessBoardEndPos)) {
-
             calculateHoveredTilePosition(mousePos, chessBoardStartPos);
 
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            ChessPiece* selectedChessPiece = chessBoard->getChessPieceByPos(selectedTileIndexes.x, selectedTileIndexes.y);
-            ChessPiece* clickedChessPiece = chessBoard->getChessPieceByPos(hoveredTileIndexes.x, hoveredTileIndexes.y);
+                ChessPiece* selectedChessPiece = chessBoard->getChessPieceByPos(selectedTileIndexes.x, selectedTileIndexes.y);
+                ChessPiece* clickedChessPiece = chessBoard->getChessPieceByPos(hoveredTileIndexes.x, hoveredTileIndexes.y);
+
+                if (selectedChessPiece != nullptr && selectedChessPiece->isWhite != gameMode->isWhiteTurnNow()) {
+                    std::cout << "Not your turn" << std::endl;
+                    selectedTileIndexes = sf::Vector2i(-1, -1);  
+                    continue;  
+                }
+
+                
+                if (selectedChessPiece && clickedChessPiece) {
+                    if (selectedChessPiece->Attack(*clickedChessPiece)) {
+                        std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
+                            << ") attacks piece at position (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
+
+                        gameMode->checkGameState();  
+                    }
+                    selectedTileIndexes = sf::Vector2i(-1, -1);  
+                }
+              
+                else if (selectedChessPiece == nullptr && clickedChessPiece == nullptr) {
+                    selectedTileIndexes = hoveredTileIndexes;
+                }
+               
+                else if (selectedChessPiece == nullptr) {
+                    selectedTileIndexes = hoveredTileIndexes;
+                    std::cout << "Piece selected at tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
+                }
             
-            if (selectedChessPiece && clickedChessPiece) {
-                if (selectedChessPiece->Attack(*clickedChessPiece))
-                {
-                    std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
-                        << ") attacks piece at position (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
-                }
-                selectedTileIndexes = sf::Vector2i(-1, -1);
-            }
-            else if (selectedChessPiece == nullptr && clickedChessPiece == nullptr) {
-                selectedTileIndexes = hoveredTileIndexes;
-            }
-            else if (selectedChessPiece == nullptr) {
-                selectedTileIndexes = hoveredTileIndexes;
-                std::cout << "Piece selected at tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
-            }
-            else if (clickedChessPiece == nullptr) {
-                if (selectedChessPiece->Move(hoveredTileIndexes)) {
-                    std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
-                        << ") moved to tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
-                }
-                selectedTileIndexes = sf::Vector2i(-1, -1);
-            }
+                else if (clickedChessPiece == nullptr) {
+                    if (selectedChessPiece->Move(hoveredTileIndexes)) {
+                        std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
+                            << ") moved to tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
-        }
-
+                        gameMode->checkGameState();  
+                    }
+                    selectedTileIndexes = sf::Vector2i(-1, -1);
+                }
+            }
         }
         else {
-            hoveredTileIndexes = sf::Vector2i(-1, -1);
-        }      
+            hoveredTileIndexes = sf::Vector2i(-1, -1);  
+        }
     }
 
-        if (event.type == sf::Event::Closed)
-            window->close();
+    if (event.type == sf::Event::Closed)
+        window->close();
 }
 
 bool Game::isMouseInChessBoard(sf::Vector2i& mousePos, sf::Vector2i& chessBoardStartPos, sf::Vector2i& gamePromptEndPos)
@@ -177,6 +187,14 @@ void Game::Draw()
         window->draw(colLabel);
     }
 
+    // Which turn is it 
+    sf::Text turnLabel;
+    turnLabel.setFont(font);
+    turnLabel.setCharacterSize(30);
+    turnLabel.setFillColor(gameMode->isWhiteTurnNow() ? sf::Color::White : sf::Color::Black);
+    turnLabel.setString(gameMode->isWhiteTurnNow() ? "White Turn" : "Black Turn");
+    turnLabel.setPosition(TURN_LABEL_POSITION);  // Правый верхний угол
+    window->draw(turnLabel);
 
 
     window->display();
@@ -190,6 +208,7 @@ void Game::Run()
 void Game::InnitGUI()
 {
     chessBoard = &ChessBoard::getInstance();
+    gameMode = new GameMode();
 }
 
 void Game::loadTextures()

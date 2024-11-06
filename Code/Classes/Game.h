@@ -15,6 +15,8 @@ class Game : public IWindowActivity
 		const uint16_t offsetYForChessBoard = 18;
 		const uint16_t TileSize = 75;
 
+		static const sf::Vector2f TURN_LABEL_POSITION;
+
 		const char columnsLabels[8] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
 
 		sf::Vector2i hoveredTileIndexes{-1, -1};
@@ -22,6 +24,8 @@ class Game : public IWindowActivity
 	
 
 		class ChessBoard* chessBoard;
+		class GameMode* gameMode;
+
 
 		void HandleInput() override;
 

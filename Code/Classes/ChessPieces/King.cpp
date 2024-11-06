@@ -1,6 +1,8 @@
 #include "King.h"
 #include <iostream>
+
 #include "../ChessBoard.h"
+
 bool King::CanMoveTo(sf::Vector2i newPosition)
 {
 
@@ -9,7 +11,7 @@ bool King::CanMoveTo(sf::Vector2i newPosition)
 
     if ((distanceX == 1 && distanceY == 0) || (distanceX == 0 && distanceY == 1) || (distanceX == 1 && distanceY == 1))
 	{
-		if (isKingInCheck(newPosition)) {
+		if (isKingInCheck(newPosition, ChessBoard::getInstance().getChessPieceByPos(newPosition.x, newPosition.y)) ) {
 			return false;
 		}
         return true;

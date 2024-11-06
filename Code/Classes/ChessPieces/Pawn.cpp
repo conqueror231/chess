@@ -31,8 +31,9 @@ bool Pawn::CanMoveTo(sf::Vector2i newPosition)
 		(this->position.y > newPosition.y && !isWhite))
 		return false;
 
-	if (isKingInCheck(newPosition))
+	if (isKingInCheck(newPosition)) 
 		return false;
+	
 
 	isFirstMove = false;
 	return true;

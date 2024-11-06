@@ -155,7 +155,6 @@
     <ClCompile Include="Code\Classes\ChessPieces\King.cpp" />
     <ClCompile Include="Code\Classes\ChessPieces\Knight.cpp" />
     <ClCompile Include="Code\Classes\ChessPieces\PieceType.cpp" />
-    <ClCompile Include="Code\Classes\Direction.cpp" />
     <ClCompile Include="Code\Classes\GameMode.cpp" />
     <ClCompile Include="Code\Classes\Player.cpp" />
   </ItemGroup>
