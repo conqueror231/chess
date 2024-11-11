@@ -5,7 +5,6 @@
 #include <iostream>
 const sf::Vector2f Game::TURN_LABEL_POSITION(875, 20);
 
-
 Game::Game()
 {
     loadTextures();
@@ -19,9 +18,14 @@ Game::Game(sf::VideoMode videoMode_, sf::String windowTitle_)
     InnitGUI();
 
 }
+
 void Game::HandleInput() {
     sf::Event event;
     while (window->pollEvent(event)) {
+        if (gameMode->getGameState() != GameState::InProgress) {
+            continue;
+        }
+
         static sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
         static sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8,
             offsetYForChessBoard + TileSize * 8);
@@ -193,9 +197,34 @@ void Game::Draw()
     turnLabel.setCharacterSize(30);
     turnLabel.setFillColor(gameMode->isWhiteTurnNow() ? sf::Color::White : sf::Color::Black);
     turnLabel.setString(gameMode->isWhiteTurnNow() ? "White Turn" : "Black Turn");
-    turnLabel.setPosition(TURN_LABEL_POSITION);  // Правый верхний угол
+    turnLabel.setPosition(TURN_LABEL_POSITION); 
     window->draw(turnLabel);
 
+    //Win  
+    if ( gameMode->getGameState() == Checkmate || gameMode->getGameState() == Stalemate) {
+        sf::Text winMessage;
+        winMessage.setFont(font);
+        winMessage.setCharacterSize(60);
+        winMessage.setFillColor(sf::Color::Yellow);
+        
+        std::string text;
+
+        if(gameMode->getGameState() == Checkmate)
+         text = gameMode->isWhiteTurnNow() ? "White wins by checkmate" : "Black wins by checkmate";
+        if(gameMode->getGameState() == Stalemate)
+         text ="Stalemate";
+
+        winMessage.setString(text);
+
+        winMessage.setPosition(window->getSize().x / 2 - winMessage.getGlobalBounds().width / 2,
+            window->getSize().y / 2 - winMessage.getGlobalBounds().height / 2);
+
+        sf::RectangleShape overlay(sf::Vector2f(window->getSize().x, window->getSize().y));
+        overlay.setFillColor(sf::Color(0, 0, 0, 150));  
+        window->draw(overlay);
+
+        window->draw(winMessage);
+    }
 
     window->display();
 }

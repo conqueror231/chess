@@ -1,6 +1,5 @@
 #include "King.h"
 #include <iostream>
-
 #include "../ChessBoard.h"
 
 bool King::CanMoveTo(sf::Vector2i newPosition)
@@ -16,7 +15,6 @@ bool King::CanMoveTo(sf::Vector2i newPosition)
 		}
         return true;
     }
-
 //	std::cout << "Invalid move" << std::endl;
     return false;
 }

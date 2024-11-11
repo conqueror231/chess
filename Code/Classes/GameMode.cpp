@@ -1,6 +1,7 @@
 #include "GameMode.h"
 #include <iostream>
 #include "ChessBoard.h"
+
 bool GameMode::isCheckmate(bool isWhite)
 {
     bool canMove = false;
@@ -39,16 +40,16 @@ bool GameMode::isCheckmate(bool isWhite)
     }
 
     if (!canMove) {
-        std::cout << "CheckMate for " << (isWhite ? "White" : "Black") << "." << std::endl;
+       // std::cout << "CheckMate for " << (isWhite ? "White" : "Black") << "." << std::endl;
         return true;
     }
 
     return false; 
 }
-
 bool GameMode::isStalemate()
 {
     return false;
+
 }
 
 void GameMode::endGame(const std::string& message)
@@ -70,11 +71,26 @@ void GameMode::checkGameState()
 {
     if (isCheckmate(!isWhiteTurn)) {
         endGame(isWhiteTurn ? "White wins by checkmate!" : "Black wins by checkmate!");
+  
     }
     else if (isStalemate()) {
         endGame("Stalemate! Draw game.");
+
     }
     else {
         switchTurn(); 
     }
+
+}
+
+GameState GameMode::getGameState()
+{
+    if (isCheckmate(!isWhiteTurn)) {
+        return GameState::Checkmate;
+    }
+    if (isStalemate()) {
+        return GameState::Stalemate;
+    }
+
+    return GameState::InProgress;
 }
