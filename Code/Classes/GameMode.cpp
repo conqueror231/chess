@@ -40,16 +40,20 @@ bool GameMode::isCheckmate(bool isWhite)
     }
 
     if (!canMove) {
-       // std::cout << "CheckMate for " << (isWhite ? "White" : "Black") << "." << std::endl;
-        return true;
+        if (ChessBoard::getInstance().isKingInCheck(!isWhiteTurn) == false)
+            return false;
+        else
+            return true;
     }
 
     return false; 
 }
 bool GameMode::isStalemate()
 {
-    return false;
+    if(isCheckmate(!isWhiteTurn) && ChessBoard::getInstance().isKingInCheck(!isWhiteTurn) == false)
+    return true;
 
+    return false;
 }
 
 void GameMode::endGame(const std::string& message)
@@ -69,7 +73,7 @@ bool GameMode::isWhiteTurnNow()
 
 void GameMode::checkGameState()
 {
-    if (isCheckmate(!isWhiteTurn)) {
+    if (isCheckmate(!isWhiteTurn) ) {
         endGame(isWhiteTurn ? "White wins by checkmate!" : "Black wins by checkmate!");
   
     }

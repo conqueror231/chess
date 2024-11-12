@@ -147,6 +147,10 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 	ChessBoard::getInstance().removeChessPiece(targetPiece);
 	return true;
 }
+void ChessPiece::MoveWithoutChecking(sf::Vector2i newPosition)
+{
+	this->position = newPosition;
+}
 bool ChessPiece::isKingInCheck(sf::Vector2i newPosition, ChessPiece* exeptionPiece)
 {
 	sf::Vector2i oldPos = this->position;

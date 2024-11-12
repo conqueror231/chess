@@ -23,7 +23,6 @@ void WindowStateManager::createMenu() {
 
 void WindowStateManager::createGame()
 {
-	std::cout << "Current state address: " << currentState.get() << std::endl;
 	std::unique_ptr<IWindowActivity> wGame = std::make_unique<Game>(sf::VideoMode{ 1024,768 }, "Chess Game");
 	setState(std::move(wGame));
 	RunState();

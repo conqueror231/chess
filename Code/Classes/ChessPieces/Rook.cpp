@@ -4,3 +4,7 @@
 #include"vector"
 #include"../Direction.h"
 
+bool Rook::getIsFirstMove() const {
+    return isFirstMove;
+}
+

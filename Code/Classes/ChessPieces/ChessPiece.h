@@ -32,6 +32,6 @@ public:
     virtual bool CanMoveTo(sf::Vector2i newPosition);
     virtual bool CanAttack(ChessPiece& targetPiece);
     virtual bool Attack(ChessPiece& targetPiece); 
-
+    void MoveWithoutChecking(sf::Vector2i newPosition);
 
 };

@@ -5,9 +5,6 @@ class IWindowActivity
 {
 public:
 virtual void Run();
-~IWindowActivity() {
-	std::cout << "Destructed" << std::endl;
-}
 protected:
 	sf::RenderWindow * window;
 	sf::String windowTitle = "Default";

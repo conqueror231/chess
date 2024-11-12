@@ -2,7 +2,6 @@
 #include "ChessPieces/ChessPiece.h"
 #include "ChessPieces/PieceType.h"
 #include "iostream"
-
 void ChessBoard::InnitChessBoard()
 {
 
@@ -156,4 +155,70 @@ void ChessBoard::resetBoard() {
     ChessPieces.clear();
 
     InnitChessBoard();
+}
+
+bool ChessBoard::canCastling(bool isWhite, bool isShortCastling)
+{
+    int y = isWhite ? 7 : 0;
+    sf::Vector2i closerRookPos = { 7, y };
+    sf::Vector2i furtherRookPos = { 0, y };
+    sf::Vector2i startKingPos = { 4, y };
+
+    ChessPiece* ChessPieceOnKingPos = getChessPieceByPos(startKingPos.x, startKingPos.y);
+    if (ChessPieceOnKingPos == nullptr)   return false;
+    King* kingPiece;
+    if ((kingPiece = dynamic_cast<King*>(ChessPieceOnKingPos)) == nullptr) return false;
+    if (!kingPiece->getIsFirstMove()) return false;
+    if (isKingInCheck(isWhite)) return false;
+
+    sf::Vector2i rookPos = isShortCastling ? closerRookPos : furtherRookPos;
+    ChessPiece* ChessPieceOnRookPos = getChessPieceByPos(rookPos.x, rookPos.y);
+    if (ChessPieceOnRookPos == nullptr)   return false;
+    Rook* rookPiece;
+    if ((rookPiece = dynamic_cast<Rook*>(ChessPieceOnRookPos)) == nullptr) return false;
+    if (!rookPiece->getIsFirstMove()) return false;
+
+    while (true) {
+        static int step = isShortCastling ? +1 : -1;
+        static int newXpos = startKingPos.x + step;
+
+        if (ChessPiece* chessPiece = getChessPieceByPos(newXpos, startKingPos.y)) {
+            if (chessPiece->GetType() == PieceType::King) break;
+            else {
+                if (chessPiece->GetType() == PieceType::Rook) break;
+
+                std::cout << "Figure on the Way" << std::endl;
+                return false;
+            }
+        }
+        newXpos += step;
+
+        if (newXpos < 0 || newXpos > 7) {
+            std::cout << "Out of bounds" << std::endl;
+            return false;
+        }
+    }
+
+
+
+    sf::Vector2i newKingPos = { isShortCastling ? rookPos.x - 1 : rookPos.x + 1, rookPos.y };
+    sf::Vector2i newRookPos = { isShortCastling ? rookPos.x - 2 : rookPos.x + 2, rookPos.y };
+
+
+    sf::Vector2i oldKingPos = kingPiece->GetPosition();
+    sf::Vector2i oldKRookPos = rookPiece->GetPosition();
+
+
+    kingPiece->MoveWithoutChecking(newKingPos);
+    rookPiece->MoveWithoutChecking(newRookPos);
+    
+    if (isKingInCheck(isWhite))
+    {
+        std::cout << "Cant Castle" << std::endl;
+        kingPiece->MoveWithoutChecking(oldKingPos);
+        rookPiece->MoveWithoutChecking(oldKRookPos);
+        return false;
+    }
+    std::cout << "Can Castle" << std::endl;
+    return true;
 }
