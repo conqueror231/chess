@@ -1,6 +1,7 @@
 #include "WindowStateManager.h"
 #include "Menu.h"
 #include "Game.h"
+#include <iostream>
 void WindowStateManager::InnitWindow(sf::VideoMode WindowSize, sf::String title)
 {
 	if (window)
@@ -22,6 +23,7 @@ void WindowStateManager::createMenu() {
 
 void WindowStateManager::createGame()
 {
+	std::cout << "Current state address: " << currentState.get() << std::endl;
 	std::unique_ptr<IWindowActivity> wGame = std::make_unique<Game>(sf::VideoMode{ 1024,768 }, "Chess Game");
 	setState(std::move(wGame));
 	RunState();
@@ -29,6 +31,10 @@ void WindowStateManager::createGame()
 
 void WindowStateManager::setState(std::unique_ptr<IWindowActivity> newState)
 {
+
+	currentState.reset();
+
+
 	currentState = std::move(newState);
 }
 

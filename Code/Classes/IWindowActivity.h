@@ -1,11 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 class IWindowActivity
 {
 public:
 virtual void Run();
-
+~IWindowActivity() {
+	std::cout << "Destructed" << std::endl;
+}
 protected:
 	sf::RenderWindow * window;
 	sf::String windowTitle = "Default";
@@ -17,5 +19,6 @@ protected:
 	
 	IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitle_);
 	IWindowActivity();
+
 };
 

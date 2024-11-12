@@ -16,16 +16,31 @@ Game::Game(sf::VideoMode videoMode_, sf::String windowTitle_)
 {
     loadTextures();
     InnitGUI();
-
+    ChessBoard::getInstance().resetBoard();
 }
 
 void Game::HandleInput() {
     sf::Event event;
     while (window->pollEvent(event)) {
+        
         if (gameMode->getGameState() != GameState::InProgress) {
-            continue;
-        }
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 
+                sf::RectangleShape playAgainButton(sf::Vector2f(200, 60));
+                playAgainButton.setFillColor(sf::Color(50, 205, 50));
+                playAgainButton.setPosition(window->getSize().x / 2 - playAgainButton.getSize().x / 2, window->getSize().y / 2 + 80);
+
+                if (mousePos.x >= playAgainButton.getPosition().x && mousePos.x <= playAgainButton.getPosition().x + playAgainButton.getSize().x &&
+                    mousePos.y >= playAgainButton.getPosition().y && mousePos.y <= playAgainButton.getPosition().y + playAgainButton.getSize().y) {
+
+                    WindowStateManager::getInstance().createMenu();
+                }
+            }
+
+         //   continue;
+        }
+        
         static sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
         static sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8,
             offsetYForChessBoard + TileSize * 8);
@@ -40,43 +55,43 @@ void Game::HandleInput() {
 
                 if (selectedChessPiece != nullptr && selectedChessPiece->isWhite != gameMode->isWhiteTurnNow()) {
                     std::cout << "Not your turn" << std::endl;
-                    selectedTileIndexes = sf::Vector2i(-1, -1);  
-                    continue;  
+                    selectedTileIndexes = sf::Vector2i(-1, -1);
+                    continue;
                 }
 
-                
+
                 if (selectedChessPiece && clickedChessPiece) {
                     if (selectedChessPiece->Attack(*clickedChessPiece)) {
                         std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                             << ") attacks piece at position (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
-                        gameMode->checkGameState();  
+                        gameMode->checkGameState();
                     }
-                    selectedTileIndexes = sf::Vector2i(-1, -1);  
+                    selectedTileIndexes = sf::Vector2i(-1, -1);
                 }
-              
+
                 else if (selectedChessPiece == nullptr && clickedChessPiece == nullptr) {
                     selectedTileIndexes = hoveredTileIndexes;
                 }
-               
+
                 else if (selectedChessPiece == nullptr) {
                     selectedTileIndexes = hoveredTileIndexes;
                     std::cout << "Piece selected at tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
                 }
-            
+
                 else if (clickedChessPiece == nullptr) {
                     if (selectedChessPiece->Move(hoveredTileIndexes)) {
                         std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                             << ") moved to tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
-                        gameMode->checkGameState();  
+                        gameMode->checkGameState();
                     }
                     selectedTileIndexes = sf::Vector2i(-1, -1);
                 }
             }
         }
         else {
-            hoveredTileIndexes = sf::Vector2i(-1, -1);  
+            hoveredTileIndexes = sf::Vector2i(-1, -1);
         }
     }
 
@@ -102,7 +117,7 @@ void Game::calculateHoveredTilePosition(sf::Vector2i& mousePos, sf::Vector2i& ch
 
             hoveredTileIndexes.x = x;
             hoveredTileIndexes.y = y;
-           // std::cout << "Row: " << y + 1 << ", Column: " << columnsLabels[x] << std::endl;
+            // std::cout << "Row: " << y + 1 << ", Column: " << columnsLabels[x] << std::endl;
             break;
         }
         break;
@@ -117,66 +132,74 @@ void Game::Update()
 void Game::Draw()
 {
     window->clear(sf::Color::Cyan);
-    
-   // chess board
+
+    // chess board
     sf::Color lightColor = sf::Color::White;
     sf::Color darkColor(73, 84, 202);
-   
-    
+
+
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
-           
+
             sf::RectangleShape tile(sf::Vector2f(TileSize, TileSize));
             tile.setPosition(col * TileSize + offsetXForChessBoard, row * TileSize + offsetYForChessBoard);
 
             if ((row + col) % 2 == 0) {
-                tile.setFillColor(lightColor); 
+                tile.setFillColor(lightColor);
             }
             else {
-                tile.setFillColor(darkColor);  
+                tile.setFillColor(darkColor);
             }
 
             window->draw(tile);
         }
     }
-    
+
     // chess pieces
     for (const auto& piece : chessBoard->getChessPieces()) {
         sf::Sprite pieceSprite;
 
-        if(piece->isWhite)
+        if (piece->isWhite)
             pieceSprite.setTexture(pieceTextures[piece->GetType()].first);
         else
             pieceSprite.setTexture(pieceTextures[piece->GetType()].second);
-        
-        pieceSprite.setPosition((piece->GetPosition().x * TileSize) + 260, (piece->GetPosition().y * TileSize + 25) );
-   
+
+        pieceSprite.setPosition((piece->GetPosition().x * TileSize) + 260, (piece->GetPosition().y * TileSize + 25));
+
         window->draw(pieceSprite);
     }
     //left side menu 
-    
+
     sf::RectangleShape rectangle;
     rectangle.setSize(sf::Vector2f(203, 768));
-    rectangle.setFillColor(sf::Color(17, 140, 202));  
+    rectangle.setFillColor(sf::Color(17, 140, 202));
     window->draw(rectangle);
-    
+
 
     sf::Font font;
-    if (!font.loadFromFile(".../../Fonts/beer money.ttf")) {  
+    if (!font.loadFromFile(".../../Fonts/beer money.ttf")) {
         std::cerr << "Failed to load font!\n";
     }
     //hovering tiles
     if (hoveredTileIndexes.x != -1 && hoveredTileIndexes.y != -1) {
         sf::RectangleShape highlightedTile(sf::Vector2f(TileSize, TileSize));
         highlightedTile.setPosition(hoveredTileIndexes.x * TileSize + offsetXForChessBoard,
-        hoveredTileIndexes.y * TileSize + offsetYForChessBoard);
-        highlightedTile.setFillColor(sf::Color(135, 215, 255, 128));  
+            hoveredTileIndexes.y * TileSize + offsetYForChessBoard);
+        highlightedTile.setFillColor(sf::Color(135, 215, 255, 128));
+        window->draw(highlightedTile);
+    }
+    // Hovering selected Tile
+    if (selectedTileIndexes.x != -1 && selectedTileIndexes.y != -1) {
+        sf::RectangleShape highlightedTile(sf::Vector2f(TileSize, TileSize));
+        highlightedTile.setPosition(selectedTileIndexes.x * TileSize + offsetXForChessBoard,
+            selectedTileIndexes.y * TileSize + offsetYForChessBoard);
+        highlightedTile.setFillColor(sf::Color(0, 0, 0, 75));
         window->draw(highlightedTile);
     }
     for (int i = 0; i < 8; ++i) {
         sf::Text rowLabel;
         rowLabel.setFont(font);
-        rowLabel.setString(std::to_string(8 - i)); 
+        rowLabel.setString(std::to_string(8 - i));
         rowLabel.setCharacterSize(24);
         rowLabel.setFillColor(sf::Color::Black);
         rowLabel.setPosition(offsetXForChessBoard - 30, i * TileSize + offsetYForChessBoard + TileSize / 4);
@@ -184,7 +207,7 @@ void Game::Draw()
 
         sf::Text colLabel;
         colLabel.setFont(font);
-        colLabel.setString(std::string(1, 'A' + i)); 
+        colLabel.setString(std::string(1, 'A' + i));
         colLabel.setCharacterSize(24);
         colLabel.setFillColor(sf::Color::Black);
         colLabel.setPosition(i * TileSize + offsetXForChessBoard + TileSize / 3, offsetYForChessBoard + 8 * TileSize);
@@ -197,22 +220,22 @@ void Game::Draw()
     turnLabel.setCharacterSize(30);
     turnLabel.setFillColor(gameMode->isWhiteTurnNow() ? sf::Color::White : sf::Color::Black);
     turnLabel.setString(gameMode->isWhiteTurnNow() ? "White Turn" : "Black Turn");
-    turnLabel.setPosition(TURN_LABEL_POSITION); 
+    turnLabel.setPosition(TURN_LABEL_POSITION);
     window->draw(turnLabel);
 
-    //Win  
-    if ( gameMode->getGameState() == Checkmate || gameMode->getGameState() == Stalemate) {
+    //End of game  
+    if (gameMode->getGameState() == Checkmate || gameMode->getGameState() == Stalemate) {
         sf::Text winMessage;
         winMessage.setFont(font);
         winMessage.setCharacterSize(60);
         winMessage.setFillColor(sf::Color::Yellow);
-        
+
         std::string text;
 
-        if(gameMode->getGameState() == Checkmate)
-         text = gameMode->isWhiteTurnNow() ? "White wins by checkmate" : "Black wins by checkmate";
-        if(gameMode->getGameState() == Stalemate)
-         text ="Stalemate";
+        if (gameMode->getGameState() == Checkmate)
+            text = gameMode->isWhiteTurnNow() ? "White wins by checkmate" : "Black wins by checkmate";
+        if (gameMode->getGameState() == Stalemate)
+            text = "Stalemate";
 
         winMessage.setString(text);
 
@@ -220,12 +243,29 @@ void Game::Draw()
             window->getSize().y / 2 - winMessage.getGlobalBounds().height / 2);
 
         sf::RectangleShape overlay(sf::Vector2f(window->getSize().x, window->getSize().y));
-        overlay.setFillColor(sf::Color(0, 0, 0, 150));  
+        overlay.setFillColor(sf::Color(0, 0, 0, 150));
         window->draw(overlay);
 
         window->draw(winMessage);
-    }
 
+        // Drawing the "Play Again" button
+        sf::RectangleShape playAgainButton(sf::Vector2f(200, 60));
+        playAgainButton.setFillColor(sf::Color(50, 205, 50));  // Green color
+        playAgainButton.setPosition(window->getSize().x / 2 - playAgainButton.getSize().x / 2, window->getSize().y / 2 + 80);
+
+        window->draw(playAgainButton);
+
+        sf::Text playAgainText;
+        playAgainText.setFont(font);
+        playAgainText.setString("Play Again");
+        playAgainText.setCharacterSize(30);
+        playAgainText.setFillColor(sf::Color::Black);
+        playAgainText.setPosition(playAgainButton.getPosition().x + playAgainButton.getSize().x / 2 - playAgainText.getGlobalBounds().width / 2,
+            playAgainButton.getPosition().y + playAgainButton.getSize().y / 2 - playAgainText.getGlobalBounds().height / 2);
+
+        window->draw(playAgainText);
+    }
+     
     window->display();
 }
 
@@ -242,16 +282,16 @@ void Game::InnitGUI()
 
 void Game::loadTextures()
 {
-        pieceTextures[PieceType::Pawn].first.loadFromFile(".../../Img/Pawn_W.png");
-        pieceTextures[PieceType::Pawn].second.loadFromFile(".../../Img/Pawn_B.png");
-        pieceTextures[PieceType::Rook].first.loadFromFile(".../../Img/Rook_W.png");
-        pieceTextures[PieceType::Rook].second.loadFromFile(".../../Img/Rook_B.png");
-        pieceTextures[PieceType::Knight].first.loadFromFile(".../../Img/Knight_W.png");
-        pieceTextures[PieceType::Knight].second.loadFromFile(".../../Img/Knight_B.png");
-        pieceTextures[PieceType::Bishop].first.loadFromFile(".../../Img/Bishop_W.png");
-        pieceTextures[PieceType::Bishop].second.loadFromFile(".../../Img/Bishop_B.png");
-        pieceTextures[PieceType::Queen].first.loadFromFile(".../../Img/Queen_W.png");
-        pieceTextures[PieceType::Queen].second.loadFromFile(".../../Img/Queen_B.png");
-        pieceTextures[PieceType::King].first.loadFromFile(".../../Img/King_W.png");
-        pieceTextures[PieceType::King].second.loadFromFile(".../../Img/King_B.png");
+    pieceTextures[PieceType::Pawn].first.loadFromFile(".../../Img/Pawn_W.png");
+    pieceTextures[PieceType::Pawn].second.loadFromFile(".../../Img/Pawn_B.png");
+    pieceTextures[PieceType::Rook].first.loadFromFile(".../../Img/Rook_W.png");
+    pieceTextures[PieceType::Rook].second.loadFromFile(".../../Img/Rook_B.png");
+    pieceTextures[PieceType::Knight].first.loadFromFile(".../../Img/Knight_W.png");
+    pieceTextures[PieceType::Knight].second.loadFromFile(".../../Img/Knight_B.png");
+    pieceTextures[PieceType::Bishop].first.loadFromFile(".../../Img/Bishop_W.png");
+    pieceTextures[PieceType::Bishop].second.loadFromFile(".../../Img/Bishop_B.png");
+    pieceTextures[PieceType::Queen].first.loadFromFile(".../../Img/Queen_W.png");
+    pieceTextures[PieceType::Queen].second.loadFromFile(".../../Img/Queen_B.png");
+    pieceTextures[PieceType::King].first.loadFromFile(".../../Img/King_W.png");
+    pieceTextures[PieceType::King].second.loadFromFile(".../../Img/King_B.png");
 }

@@ -148,3 +148,12 @@ bool ChessBoard::isKingInCheck(bool isWhite, ChessPiece* exceptionPiece) const {
     }
     return false;
 }
+
+void ChessBoard::resetBoard() {
+    for (auto piece : ChessPieces) {
+        delete piece; 
+    }
+    ChessPieces.clear();
+
+    InnitChessBoard();
+}
