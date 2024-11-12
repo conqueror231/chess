@@ -8,3 +8,13 @@ bool Rook::getIsFirstMove() const {
     return isFirstMove;
 }
 
+bool Rook::Move(sf::Vector2i newPosition)
+{
+    if (ChessPiece::Move(newPosition))
+    {
+        isFirstMove = false;
+        return true;
+    }
+    return false;
+}
+

@@ -36,6 +36,7 @@ public:
     std::vector<sf::Vector2i> getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i pos);
     bool isKingInCheck(bool isWhite, ChessPiece* exceptionPiece = nullptr) const; 
     void resetBoard();
-    bool canCastling(bool isWhite, bool isShortCastling);
+    bool Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCanCastle = false);
+ 
 };
 

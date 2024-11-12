@@ -134,6 +134,20 @@ bool ChessPiece::CanAttack(ChessPiece& targetPiece)
 
 	return true;
 }
+
+bool ChessPiece::CanAttack(sf::Vector2i newPosition)
+{
+	if (CanMoveTo(newPosition) == false)
+		return false;
+
+	if (isKingInCheck(this->position)) {
+		return false;
+	}
+
+	return true;
+}
+
+
 bool ChessPiece::Attack(ChessPiece& targetPiece)
 {
 	if (CanAttack(targetPiece) == false)
@@ -147,6 +161,7 @@ bool ChessPiece::Attack(ChessPiece& targetPiece)
 	ChessBoard::getInstance().removeChessPiece(targetPiece);
 	return true;
 }
+
 void ChessPiece::MoveWithoutChecking(sf::Vector2i newPosition)
 {
 	this->position = newPosition;
