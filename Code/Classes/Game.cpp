@@ -3,8 +3,9 @@
 #include "ChessBoard.h"
 #include "GameMode.h"
 #include <iostream>
-const sf::Vector2f Game::TURN_LABEL_POSITION(875, 20);
-
+const sf::Vector2f Game::TURN_LABEL_POSITION(875, 330);
+const sf::Vector2f Game::BLACK_KING_COUNTER_POSITION(890, 20);
+const sf::Vector2f Game::WHITE_KING_COUNTER_POSITION(890, 500);
 Game::Game()
 {
     loadTextures();
@@ -38,7 +39,7 @@ void Game::HandleInput() {
                 }
             }
 
-         //   continue;
+            continue;
         }
         
         static sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
@@ -223,6 +224,64 @@ void Game::Draw()
     turnLabel.setPosition(TURN_LABEL_POSITION);
     window->draw(turnLabel);
 
+
+    //Count of captured pieces
+    sf::Sprite kingSprite;
+    kingSprite.setTexture(pieceTextures[PieceType::King].second);
+    kingSprite.setPosition(BLACK_KING_COUNTER_POSITION);
+    kingSprite.scale(1.5, 1.5);
+    window->draw(kingSprite);
+    kingSprite.setTexture(pieceTextures[PieceType::King].first);
+    kingSprite.setPosition(WHITE_KING_COUNTER_POSITION);
+    window->draw(kingSprite);
+
+    sf::Vector2f OffsetForBlackPawns = { WHITE_KING_COUNTER_POSITION.x - 35,WHITE_KING_COUNTER_POSITION.y + 80 };
+    sf::Vector2f OffsetForWhitePawns = { BLACK_KING_COUNTER_POSITION.x - 35,BLACK_KING_COUNTER_POSITION.y + 80 };
+    sf::Vector2f OffsetForBlackNotPawns = { WHITE_KING_COUNTER_POSITION.x + 10,WHITE_KING_COUNTER_POSITION.y + 80 };
+    sf::Vector2f OffsetForWhiteNotPawns = { BLACK_KING_COUNTER_POSITION.x + 10,BLACK_KING_COUNTER_POSITION.y + 80 };
+    for (const std::pair<PieceType, bool>& capturedPiece : ChessBoard::getInstance().GetCapturedPiecesTypes()) {
+     
+        static float stepXForPawns = 5;  
+        static float stepXForNotPawns = 16;
+        sf::Sprite capturedPieceSprite;
+        capturedPieceSprite.scale(0.5, 0.5);
+        sf::Texture texture = capturedPiece.second ? pieceTextures[capturedPiece.first].first : pieceTextures[capturedPiece.first].second;
+        capturedPieceSprite.setTexture(texture);
+       
+       if (capturedPiece.second) {
+
+           if (capturedPiece.first == PieceType::Pawn) {
+               capturedPieceSprite.setPosition(OffsetForWhitePawns);
+               OffsetForWhitePawns.x += stepXForPawns;
+           }
+           else {
+               capturedPieceSprite.setPosition(OffsetForWhiteNotPawns);
+               OffsetForWhiteNotPawns.x += stepXForNotPawns;
+           }
+
+       }
+      else {
+           if (capturedPiece.first == PieceType::Pawn) {
+               capturedPieceSprite.setPosition(OffsetForBlackPawns);
+               OffsetForBlackPawns.x += stepXForPawns;
+           }
+           else {
+               capturedPieceSprite.setPosition(OffsetForBlackNotPawns);
+               OffsetForBlackNotPawns.x += stepXForNotPawns;
+           }
+      }
+       window->draw(capturedPieceSprite);
+    }
+ /*  sf::Sprite capturedPiece;
+    capturedPiece.setTexture(pieceTextures[PieceType::Pawn].first);
+    capturedPiece.setPosition(BLACK_KING_COUNTER_POSITION.x - 35,BLACK_KING_COUNTER_POSITION.y + 80 );
+    capturedPiece.scale(0.5, 0.5);
+    window->draw(capturedPiece);
+    
+    capturedPiece.setTexture(pieceTextures[PieceType::Pawn].first);
+    capturedPiece.setPosition(BLACK_KING_COUNTER_POSITION.x - 35, BLACK_KING_COUNTER_POSITION.y + 80);
+    window->draw(capturedPiece);
+    */
     //End of game  
     if (gameMode->getGameState() == Checkmate || gameMode->getGameState() == Stalemate) {
         sf::Text winMessage;
@@ -248,6 +307,7 @@ void Game::Draw()
 
         window->draw(winMessage);
 
+
         // Drawing the "Play Again" button
         sf::RectangleShape playAgainButton(sf::Vector2f(200, 60));
         playAgainButton.setFillColor(sf::Color(50, 205, 50));  // Green color
@@ -261,7 +321,7 @@ void Game::Draw()
         playAgainText.setCharacterSize(30);
         playAgainText.setFillColor(sf::Color::Black);
         playAgainText.setPosition(playAgainButton.getPosition().x + playAgainButton.getSize().x / 2 - playAgainText.getGlobalBounds().width / 2,
-            playAgainButton.getPosition().y + playAgainButton.getSize().y / 2 - playAgainText.getGlobalBounds().height / 2);
+        playAgainButton.getPosition().y + playAgainButton.getSize().y / 2 - playAgainText.getGlobalBounds().height / 2);
 
         window->draw(playAgainText);
     }

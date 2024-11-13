@@ -80,13 +80,16 @@ ChessPiece* ChessBoard::getChessPieceByPos(int x, int y) const
 
 bool ChessBoard::removeChessPiece(ChessPiece& chessPieceForDeleting) {
     for (auto it = ChessPieces.begin(); it != ChessPieces.end(); ++it) {
-        if (*it == &chessPieceForDeleting) { 
-            delete* it; 
-            ChessPieces.erase(it); 
+        if (*it == &chessPieceForDeleting) {
+            capturedPieces.push_back(std::make_pair(chessPieceForDeleting.GetType(), chessPieceForDeleting.isWhite));
+
+            delete* it;
+            ChessPieces.erase(it);
+
             return true;
         }
     }
-    return false; 
+    return false;
 }
 
 std::vector<sf::Vector2i> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i innitPos)
@@ -234,5 +237,10 @@ void ChessBoard::PromotePawn(Pawn& pawnToPromote)
         ChessPieces.push_back(new Queen(pawnToPromote.GetPosition(), PieceType::Queen, false));
 
     removeChessPiece(pawnToPromote);
+}
+
+std::vector<std::pair<PieceType, bool>> ChessBoard::GetCapturedPiecesTypes()
+{
+    return capturedPieces;
 }
 

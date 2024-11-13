@@ -16,6 +16,8 @@ private:
 	const uint16_t TileSize = 75;
 
 	static const sf::Vector2f TURN_LABEL_POSITION;
+	static const sf::Vector2f BLACK_KING_COUNTER_POSITION;
+	static const sf::Vector2f WHITE_KING_COUNTER_POSITION;
 
 	const char columnsLabels[8] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
 

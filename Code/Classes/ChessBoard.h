@@ -11,6 +11,9 @@
 class ChessBoard
 {
 	std::vector<ChessPiece*> ChessPieces;
+    // bool isWhite
+    std::vector<std::pair<PieceType,bool>> capturedPieces;
+
 	float TileSize = 50.f;
 
     void InnitChessBoard();
@@ -38,7 +41,7 @@ public:
     void resetBoard();
     bool Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCanCastle = false);
     void PromotePawn(Pawn& pawnToPromote);
-
- 
+    std::vector<std::pair<PieceType, bool>> GetCapturedPiecesTypes();
+    
 };
 
