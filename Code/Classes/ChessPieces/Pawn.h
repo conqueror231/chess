@@ -11,4 +11,6 @@ public:
 
     bool CanMoveTo(sf::Vector2i newPosition) override;
     bool CanAttack(ChessPiece& targetPiece) override;
+    bool NeedToPromote();
+    bool Move(sf::Vector2i newPosition) override;
 };

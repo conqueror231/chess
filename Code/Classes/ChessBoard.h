@@ -37,6 +37,8 @@ public:
     bool isKingInCheck(bool isWhite, ChessPiece* exceptionPiece = nullptr) const; 
     void resetBoard();
     bool Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCanCastle = false);
+    void PromotePawn(Pawn& pawnToPromote);
+
  
 };
 

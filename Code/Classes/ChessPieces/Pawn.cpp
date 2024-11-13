@@ -62,3 +62,23 @@ bool Pawn::CanAttack(ChessPiece& targetPiece)
 	//std::cout << "Can't attack" << std::endl;
 	return false;
 }
+
+bool Pawn::NeedToPromote()
+{
+	uint16_t lastTilePos = isWhite ? 0 : 7;
+	if (this->position.y == lastTilePos)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Pawn::Move(sf::Vector2i newPosition) {
+	if (ChessPiece::Move(newPosition) == true) {
+		if(NeedToPromote() == true)
+			ChessBoard::getInstance().PromotePawn(*this);
+		return true;
+	}
+	return false;
+}
+

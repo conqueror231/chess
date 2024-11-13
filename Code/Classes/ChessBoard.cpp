@@ -188,7 +188,7 @@ bool ChessBoard::Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCa
             else {
                 if (chessPiece->GetType() == PieceType::Rook) break;
 
-                //std::cout << "Figure on the Way" << std::endl;
+                std::cout << "Figure on the Way" << std::endl;
                 return false;
             }
         }
@@ -197,7 +197,7 @@ bool ChessBoard::Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCa
         for (ChessPiece* piece : ChessPieces) {
             if (piece->isWhite != isWhite) { 
                 if (piece->CanAttack(sf::Vector2i(newXPos, startKingPos.y))) {
-                    std::cout << "Cant castle (bitoe pole)" << std::endl;
+                    std::cout << "Cant castle" << std::endl;
                     return false;
                 }
             }
@@ -217,15 +217,22 @@ bool ChessBoard::Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCa
     sf::Vector2i newKingPos = { isShortCastling ? rookPos.x - 1 : rookPos.x + 1, rookPos.y };
     sf::Vector2i newRookPos = { isShortCastling ? rookPos.x - 2 : rookPos.x + 2, rookPos.y };
 
-
-    //sf::Vector2i oldKingPos = kingPiece->GetPosition();
-    //sf::Vector2i oldKRookPos = rookPiece->GetPosition();
-
     if (onlyCheckIfCanCastle == false) {
         kingPiece->MoveWithoutChecking(newKingPos);
         rookPiece->MoveWithoutChecking(newRookPos);
     }
     std::cout << "Can Castle" << std::endl;
     return true;
+}
+
+void ChessBoard::PromotePawn(Pawn& pawnToPromote)
+{
+
+    if (pawnToPromote.isWhite == true)
+        ChessPieces.push_back(new Queen(pawnToPromote.GetPosition(), PieceType::Queen, true));
+    else
+        ChessPieces.push_back(new Queen(pawnToPromote.GetPosition(), PieceType::Queen, false));
+
+    removeChessPiece(pawnToPromote);
 }
 
