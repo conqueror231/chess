@@ -1,6 +1,7 @@
 #include "King.h"
 #include <iostream>
 #include "../ChessBoard.h"
+#include "../GameLog.h"
 
 
 bool King::CanMoveTo(sf::Vector2i newPosition)
@@ -34,13 +35,14 @@ bool King::Ñastling(sf::Vector2i newPosition, bool onlyCheckIfCanCastle)
 
         if (ChessBoard::getInstance().Castling(isWhite, true, onlyCheckIfCanCastle) == false) return false;
  
+        GameLog::getInstance().addLog("Short  castling");
         return true;
     }
 
     if (newPosition == sf::Vector2i{ furtherRookPos.x + 1, furtherRookPos.y })
     {
         if (ChessBoard::getInstance().Castling(isWhite, false, onlyCheckIfCanCastle) == false) return false;
-
+        GameLog::getInstance().addLog("Long  castling");
 
         return true;
     }

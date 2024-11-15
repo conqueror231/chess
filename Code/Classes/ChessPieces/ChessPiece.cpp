@@ -1,6 +1,8 @@
 #include "ChessPiece.h"
 #include "iostream"
 #include "../ChessBoard.h"
+#include "../GameLog.h"
+
 bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 {
     if (dir == Direction::Horizontal) {
@@ -89,7 +91,6 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 
     return true;
 }
-
 bool ChessPiece::Move(sf::Vector2i newPosition)
 {
 	if (CanMoveTo(newPosition) == false) {
@@ -98,6 +99,7 @@ bool ChessPiece::Move(sf::Vector2i newPosition)
 	if (isKingInCheck(newPosition))
 		return false;
 
+	GameLog::getInstance().logPieceMoved(this->position, newPosition);
 	this->position = newPosition;
 	return true;
 }
@@ -125,16 +127,16 @@ bool ChessPiece::CanAttack(ChessPiece& targetPiece)
 	if (this->isWhite == targetPiece.isWhite)
 	{
 		//std::cout << "Ally piece" << std::endl;
+
+		GameLog::getInstance().addLog("Ally piece");
 		return false;
 	}
 
-	if (CanMoveTo(targetPiece.GetPosition()) == false)
+	if (CanMoveTo(targetPiece.GetPosition()) == false) {
 		return false;
-
-
+	}
 	return true;
 }
-
 bool ChessPiece::CanAttack(sf::Vector2i newPosition)
 {
 	if (CanMoveTo(newPosition) == false)
@@ -146,22 +148,22 @@ bool ChessPiece::CanAttack(sf::Vector2i newPosition)
 
 	return true;
 }
-
-
 bool ChessPiece::Attack(ChessPiece& targetPiece)
 {
-	if (CanAttack(targetPiece) == false)
+	if (CanAttack(targetPiece) == false){
+		GameLog::getInstance().addLog("Can`t attack this piece");
 		return false;
-
+	}
 	if (isKingInCheck(targetPiece.GetPosition(), &targetPiece)) {
+
 		return false;
 	}
 
+	GameLog::getInstance().logPieceAttack(this->position, targetPiece.GetPosition(), targetPiece.GetType());
 	this->position = targetPiece.GetPosition();
 	ChessBoard::getInstance().removeChessPiece(targetPiece);
 	return true;
 }
-
 void ChessPiece::MoveWithoutChecking(sf::Vector2i newPosition)
 {
 	this->position = newPosition;

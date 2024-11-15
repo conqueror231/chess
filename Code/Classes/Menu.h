@@ -9,14 +9,14 @@ public:
     Menu(sf::VideoMode videoMode_, sf::String windowTitle_);
 
 private:
-    sf::RectangleShape btnStartGame; // Кнопка "Играть с другом"
-    sf::Text btnText;                // Текст на кнопке
-    sf::Font font;                   // Шрифт для текста
+    static const sf::Vector2f BTN_START_GAME_POSITION;
+    sf::RectangleShape btnStartGame; 
+    sf::Font font;                
 
-    void HandleInput() override;     // Обработка ввода
-    void Update() override;          // Обновление состояния
-    void Draw() override;            // Отрисовка окна
-    void Run() override;             // Запуск активности окна
+    void HandleInput() override;   
+    void Update() override;         
+    void Draw() override;          
+    void Run() override;           
 
-    void InitGUI();                  // Инициализация графического интерфейса (исправлено название метода)
+    void InitGUI();                  
 };

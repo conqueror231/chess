@@ -2,14 +2,19 @@
 #include "WindowStateManager.h"
 #include "ChessBoard.h"
 #include "GameMode.h"
+#include "GameLog.h"
 #include <iostream>
-const sf::Vector2f Game::TURN_LABEL_POSITION(875, 330);
-const sf::Vector2f Game::BLACK_KING_COUNTER_POSITION(890, 20);
-const sf::Vector2f Game::WHITE_KING_COUNTER_POSITION(890, 500);
+const sf::Vector2f Game::TURN_LABEL_FOR_BLACK_POSITION(875, 240);
+const sf::Vector2f Game::TURN_LABEL_FOR_WHITE_POSITION(875, 470);
+const sf::Vector2f Game::BLACK_KING_COUNTER_POSITION(780, 10);
+const sf::Vector2f Game::WHITE_KING_COUNTER_POSITION(780, 500);
+const sf::Vector2f Game::GAME_LOG_OUTPUT_POSITION(780, 350);
+
 Game::Game()
 {
     loadTextures();
     InnitGUI();
+     gameLog = &GameLog::getInstance();
 }
 
 Game::Game(sf::VideoMode videoMode_, sf::String windowTitle_)
@@ -55,6 +60,7 @@ void Game::HandleInput() {
                 ChessPiece* clickedChessPiece = chessBoard->getChessPieceByPos(hoveredTileIndexes.x, hoveredTileIndexes.y);
 
                 if (selectedChessPiece != nullptr && selectedChessPiece->isWhite != gameMode->isWhiteTurnNow()) {
+                    GameLog::getInstance().addLog("Not your turn");
                     std::cout << "Not your turn" << std::endl;
                     selectedTileIndexes = sf::Vector2i(-1, -1);
                     continue;
@@ -62,12 +68,13 @@ void Game::HandleInput() {
 
 
                 if (selectedChessPiece && clickedChessPiece) {
+                    PieceType typeOfClickedChessPiece = clickedChessPiece->GetType();
                     if (selectedChessPiece->Attack(*clickedChessPiece)) {
                         std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                             << ") attacks piece at position (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
-
                         gameMode->checkGameState();
                     }
+                
                     selectedTileIndexes = sf::Vector2i(-1, -1);
                 }
 
@@ -85,8 +92,12 @@ void Game::HandleInput() {
                         std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                             << ") moved to tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
+                
                         gameMode->checkGameState();
+
                     }
+                    
+               
                     selectedTileIndexes = sf::Vector2i(-1, -1);
                 }
             }
@@ -134,10 +145,34 @@ void Game::Draw()
 {
     window->clear(sf::Color::Cyan);
 
-    // chess board
-    sf::Color lightColor = sf::Color::White;
-    sf::Color darkColor(73, 84, 202);
+    sf::Sprite background;
+    sf::Texture backgroundTexture;
+    backgroundTexture.loadFromFile(".../../Img/Background.png");
+    background.setTexture(backgroundTexture);
+    background.setPosition(0, 0);
 
+    window->draw(background);
+
+    // chess board
+  
+    sf::Sprite chessBoardBackground;
+    sf::Texture chessBoardBackgroundTexture;
+
+    chessBoardBackgroundTexture.loadFromFile(".../../Img/ChessBoardBackground.png");
+    chessBoardBackground.setTexture(chessBoardBackgroundTexture);
+    chessBoardBackground.setPosition(offsetXForChessBoard -75, 0);
+    
+    window->draw(chessBoardBackground);
+
+
+    sf::Texture lightTileTexture;
+    sf::Texture darkTileTexture;
+
+    if (!lightTileTexture.loadFromFile(".../../Img/WhiteTile.png") ||
+        !darkTileTexture.loadFromFile(".../../Img/BlackTile.png")) {
+        std::cerr << "Ошибка: не удалось загрузить изображения тайлов." << std::endl;
+        return;
+    }
 
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
@@ -145,14 +180,15 @@ void Game::Draw()
             sf::RectangleShape tile(sf::Vector2f(TileSize, TileSize));
             tile.setPosition(col * TileSize + offsetXForChessBoard, row * TileSize + offsetYForChessBoard);
 
+            
             if ((row + col) % 2 == 0) {
-                tile.setFillColor(lightColor);
+                tile.setTexture(&lightTileTexture); 
             }
             else {
-                tile.setFillColor(darkColor);
+                tile.setTexture(&darkTileTexture);   
             }
 
-            window->draw(tile);
+            window->draw(tile);  
         }
     }
 
@@ -165,17 +201,10 @@ void Game::Draw()
         else
             pieceSprite.setTexture(pieceTextures[piece->GetType()].second);
 
-        pieceSprite.setPosition((piece->GetPosition().x * TileSize) + 260, (piece->GetPosition().y * TileSize + 25));
+        pieceSprite.setPosition((piece->GetPosition().x * TileSize) + offsetXForChessBoard, (piece->GetPosition().y * TileSize + offsetYForChessBoard));
 
         window->draw(pieceSprite);
     }
-    //left side menu 
-
-    sf::RectangleShape rectangle;
-    rectangle.setSize(sf::Vector2f(203, 768));
-    rectangle.setFillColor(sf::Color(17, 140, 202));
-    window->draw(rectangle);
-
 
     sf::Font font;
     if (!font.loadFromFile(".../../Fonts/beer money.ttf")) {
@@ -194,10 +223,11 @@ void Game::Draw()
         sf::RectangleShape highlightedTile(sf::Vector2f(TileSize, TileSize));
         highlightedTile.setPosition(selectedTileIndexes.x * TileSize + offsetXForChessBoard,
             selectedTileIndexes.y * TileSize + offsetYForChessBoard);
-        highlightedTile.setFillColor(sf::Color(0, 0, 0, 75));
+        highlightedTile.setFillColor(sf::Color(0, 0, 0, 100));
         window->draw(highlightedTile);
     }
     for (int i = 0; i < 8; ++i) {
+        /*
         sf::Text rowLabel;
         rowLabel.setFont(font);
         rowLabel.setString(std::to_string(8 - i));
@@ -213,6 +243,7 @@ void Game::Draw()
         colLabel.setFillColor(sf::Color::Black);
         colLabel.setPosition(i * TileSize + offsetXForChessBoard + TileSize / 3, offsetYForChessBoard + 8 * TileSize);
         window->draw(colLabel);
+        */
     }
 
     // Which turn is it 
@@ -221,27 +252,31 @@ void Game::Draw()
     turnLabel.setCharacterSize(30);
     turnLabel.setFillColor(gameMode->isWhiteTurnNow() ? sf::Color::White : sf::Color::Black);
     turnLabel.setString(gameMode->isWhiteTurnNow() ? "White Turn" : "Black Turn");
-    turnLabel.setPosition(TURN_LABEL_POSITION);
+    sf::Vector2f pos = gameMode->isWhiteTurnNow() ? TURN_LABEL_FOR_WHITE_POSITION : TURN_LABEL_FOR_BLACK_POSITION;
+    turnLabel.setPosition(pos);
     window->draw(turnLabel);
 
 
     //Count of captured pieces
     sf::Sprite kingSprite;
-    kingSprite.setTexture(pieceTextures[PieceType::King].second);
+    sf::Texture kingTexture;
+    kingTexture.loadFromFile(".../../Img/BlackKingForCounter.png");
+    kingSprite.setTexture(kingTexture);
     kingSprite.setPosition(BLACK_KING_COUNTER_POSITION);
-    kingSprite.scale(1.5, 1.5);
     window->draw(kingSprite);
-    kingSprite.setTexture(pieceTextures[PieceType::King].first);
+    kingTexture.loadFromFile(".../../Img/WhiteKingForCounter.png");
     kingSprite.setPosition(WHITE_KING_COUNTER_POSITION);
     window->draw(kingSprite);
 
-    sf::Vector2f OffsetForBlackPawns = { WHITE_KING_COUNTER_POSITION.x - 35,WHITE_KING_COUNTER_POSITION.y + 80 };
-    sf::Vector2f OffsetForWhitePawns = { BLACK_KING_COUNTER_POSITION.x - 35,BLACK_KING_COUNTER_POSITION.y + 80 };
-    sf::Vector2f OffsetForBlackNotPawns = { WHITE_KING_COUNTER_POSITION.x + 10,WHITE_KING_COUNTER_POSITION.y + 80 };
-    sf::Vector2f OffsetForWhiteNotPawns = { BLACK_KING_COUNTER_POSITION.x + 10,BLACK_KING_COUNTER_POSITION.y + 80 };
+  
+
+    sf::Vector2f OffsetForBlackPawns = { WHITE_KING_COUNTER_POSITION.x - 35,WHITE_KING_COUNTER_POSITION.y + 200 };
+    sf::Vector2f OffsetForWhitePawns = { BLACK_KING_COUNTER_POSITION.x - 35,BLACK_KING_COUNTER_POSITION.y + 200 };
+    sf::Vector2f OffsetForBlackNotPawns = { WHITE_KING_COUNTER_POSITION.x + 10,WHITE_KING_COUNTER_POSITION.y + 200 };
+    sf::Vector2f OffsetForWhiteNotPawns = { BLACK_KING_COUNTER_POSITION.x + 10,BLACK_KING_COUNTER_POSITION.y + 200 };
     for (const std::pair<PieceType, bool>& capturedPiece : ChessBoard::getInstance().GetCapturedPiecesTypes()) {
      
-        static float stepXForPawns = 5;  
+        static float stepXForPawns = 7;  
         static float stepXForNotPawns = 16;
         sf::Sprite capturedPieceSprite;
         capturedPieceSprite.scale(0.5, 0.5);
@@ -272,16 +307,18 @@ void Game::Draw()
       }
        window->draw(capturedPieceSprite);
     }
- /*  sf::Sprite capturedPiece;
-    capturedPiece.setTexture(pieceTextures[PieceType::Pawn].first);
-    capturedPiece.setPosition(BLACK_KING_COUNTER_POSITION.x - 35,BLACK_KING_COUNTER_POSITION.y + 80 );
-    capturedPiece.scale(0.5, 0.5);
-    window->draw(capturedPiece);
+
+    //right output
+    sf::Text gameOutputLog;
+    gameOutputLog.setFont(font);
+    gameOutputLog.setCharacterSize(20);
+    gameOutputLog.setFillColor(sf::Color::Black);
     
-    capturedPiece.setTexture(pieceTextures[PieceType::Pawn].first);
-    capturedPiece.setPosition(BLACK_KING_COUNTER_POSITION.x - 35, BLACK_KING_COUNTER_POSITION.y + 80);
-    window->draw(capturedPiece);
-    */
+    sf::String ouputLog = GameLog::getInstance().getLog();
+    gameOutputLog.setString(ouputLog);
+
+    gameOutputLog.setPosition(GAME_LOG_OUTPUT_POSITION);
+    window->draw(gameOutputLog);
     //End of game  
     if (gameMode->getGameState() == Checkmate || gameMode->getGameState() == Stalemate) {
         sf::Text winMessage;
@@ -305,26 +342,68 @@ void Game::Draw()
         overlay.setFillColor(sf::Color(0, 0, 0, 150));
         window->draw(overlay);
 
+        
         window->draw(winMessage);
 
+        if (gameMode->getGameState() == Checkmate || gameMode->getGameState() == Stalemate) {
+            sf::Text winMessage;
+            winMessage.setFont(font);
+            winMessage.setCharacterSize(60);
+            winMessage.setFillColor(sf::Color::Yellow);
 
-        // Drawing the "Play Again" button
-        sf::RectangleShape playAgainButton(sf::Vector2f(200, 60));
-        playAgainButton.setFillColor(sf::Color(50, 205, 50));  // Green color
-        playAgainButton.setPosition(window->getSize().x / 2 - playAgainButton.getSize().x / 2, window->getSize().y / 2 + 80);
+            std::string text;
 
-        window->draw(playAgainButton);
+            if (gameMode->getGameState() == Checkmate)
+                text = gameMode->isWhiteTurnNow() ? "White wins by checkmate" : "Black wins by checkmate";
+            if (gameMode->getGameState() == Stalemate)
+                text = "Stalemate";
 
-        sf::Text playAgainText;
-        playAgainText.setFont(font);
-        playAgainText.setString("Play Again");
-        playAgainText.setCharacterSize(30);
-        playAgainText.setFillColor(sf::Color::Black);
-        playAgainText.setPosition(playAgainButton.getPosition().x + playAgainButton.getSize().x / 2 - playAgainText.getGlobalBounds().width / 2,
-        playAgainButton.getPosition().y + playAgainButton.getSize().y / 2 - playAgainText.getGlobalBounds().height / 2);
+            winMessage.setString(text);
 
-        window->draw(playAgainText);
+            winMessage.setPosition(window->getSize().x / 2 - winMessage.getGlobalBounds().width / 2,
+                window->getSize().y / 2 - winMessage.getGlobalBounds().height / 2);
+
+
+            sf::RectangleShape overlay(sf::Vector2f(window->getSize().x, window->getSize().y));
+            overlay.setFillColor(sf::Color(0, 0, 0, 150));
+            window->draw(overlay);
+
+          
+            window->draw(winMessage);
+
+            // Play Again button
+            sf::RectangleShape playAgainButton(sf::Vector2f(250, 70));
+            playAgainButton.setFillColor(sf::Color(240, 230, 140)); 
+            playAgainButton.setOutlineColor(sf::Color(200, 190, 120)); 
+            playAgainButton.setOutlineThickness(4);
+            playAgainButton.setPosition(window->getSize().x / 2 - playAgainButton.getSize().x / 2,
+                window->getSize().y / 2 + 100);
+
+    
+            sf::RectangleShape buttonShadow(playAgainButton.getSize());
+            buttonShadow.setFillColor(sf::Color(0, 0, 0, 80)); 
+            buttonShadow.setPosition(playAgainButton.getPosition().x + 5, playAgainButton.getPosition().y + 5);
+            window->draw(buttonShadow);
+
+          
+            window->draw(playAgainButton);
+
+         
+            sf::Text playAgainText;
+            playAgainText.setFont(font);
+            playAgainText.setString("Back to menu");
+            playAgainText.setCharacterSize(30);
+            playAgainText.setFillColor(sf::Color::Black);
+            playAgainText.setPosition(
+                playAgainButton.getPosition().x + playAgainButton.getSize().x / 2 - playAgainText.getGlobalBounds().width / 2,
+                playAgainButton.getPosition().y + playAgainButton.getSize().y / 2 - playAgainText.getGlobalBounds().height / 2);
+
+     
+            window->draw(playAgainText);
+        }
+
     }
+
      
     window->display();
 }

@@ -11,15 +11,16 @@ public:
 private:
 	std::map<PieceType, std::pair<sf::Texture, sf::Texture>> pieceTextures;
 
-	const uint16_t offsetXForChessBoard = 254;
-	const uint16_t offsetYForChessBoard = 18;
+	const uint16_t offsetXForChessBoard = 75;
+	const uint16_t offsetYForChessBoard = 75;
 	const uint16_t TileSize = 75;
 
-	static const sf::Vector2f TURN_LABEL_POSITION;
+	static const sf::Vector2f TURN_LABEL_FOR_BLACK_POSITION;
+	static const sf::Vector2f TURN_LABEL_FOR_WHITE_POSITION;
 	static const sf::Vector2f BLACK_KING_COUNTER_POSITION;
 	static const sf::Vector2f WHITE_KING_COUNTER_POSITION;
+	static const sf::Vector2f GAME_LOG_OUTPUT_POSITION;
 
-	const char columnsLabels[8] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
 
 	sf::Vector2i hoveredTileIndexes{ -1, -1 };
 	sf::Vector2i selectedTileIndexes{ -1, -1 };
@@ -27,7 +28,7 @@ private:
 
 	class ChessBoard* chessBoard;
 	class GameMode* gameMode;
-
+	class GameLog* gameLog;
 
 	void HandleInput() override;
 

@@ -16,7 +16,8 @@ IWindowActivity::IWindowActivity(sf::VideoMode videoMode_, sf::String windowTitl
 
 	window->setTitle(windowTitle_);
 	window->setSize(sf::Vector2u(videoMode_.width, videoMode_.height));
-
+	sf::Uint8 transparentPixel[4] = { 255, 255, 255, 0 };
+	window->setIcon(1, 1, transparentPixel);
 }
 
 IWindowActivity::IWindowActivity()
