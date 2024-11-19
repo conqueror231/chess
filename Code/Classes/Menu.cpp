@@ -34,10 +34,6 @@ void Menu::HandleInput() {
 }
 
 
-void Menu::Update() {
-
-}
-
 void Menu::Draw() {
     window->clear(sf::Color::Cyan); 
 
@@ -48,11 +44,7 @@ void Menu::Draw() {
     background.setPosition(0, 0);
 
     window->draw(background);
-
-
     window->draw(btnStartGame);
-
-
     window->display();
 }
 
@@ -65,7 +57,6 @@ void Menu::InitGUI() {
 
     btnStartGame.setSize(sf::Vector2f(380, 90));
     btnStartGame.setPosition(BTN_START_GAME_POSITION);
-
 
 }
 

@@ -13,8 +13,7 @@ private:
     sf::RectangleShape btnStartGame; 
     sf::Font font;                
 
-    void HandleInput() override;   
-    void Update() override;         
+    void HandleInput() override;        
     void Draw() override;          
     void Run() override;           
 

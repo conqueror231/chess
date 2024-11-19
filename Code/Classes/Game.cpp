@@ -43,18 +43,13 @@ void Game::HandleInput() {
                     WindowStateManager::getInstance().createMenu();
                 }
             }
-
             continue;
         }
-        
         static sf::Vector2i chessBoardStartPos(offsetXForChessBoard, offsetYForChessBoard);
-        static sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8,
-            offsetYForChessBoard + TileSize * 8);
+        static sf::Vector2i chessBoardEndPos(offsetXForChessBoard + TileSize * 8, offsetYForChessBoard + TileSize * 8);
         sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
-
         if (isMouseInChessBoard(mousePos, chessBoardStartPos, chessBoardEndPos)) {
             calculateHoveredTilePosition(mousePos, chessBoardStartPos);
-
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 ChessPiece* selectedChessPiece = chessBoard->getChessPieceByPos(selectedTileIndexes.x, selectedTileIndexes.y);
                 ChessPiece* clickedChessPiece = chessBoard->getChessPieceByPos(hoveredTileIndexes.x, hoveredTileIndexes.y);
@@ -69,7 +64,7 @@ void Game::HandleInput() {
 
                 if (selectedChessPiece && clickedChessPiece) {
                     PieceType typeOfClickedChessPiece = clickedChessPiece->GetType();
-                    if (selectedChessPiece->Attack(*clickedChessPiece)) {
+                    if (selectedChessPiece->Attack(*clickedChessPiece, false)) {
                         std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                             << ") attacks piece at position (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
                         gameMode->checkGameState();
@@ -88,7 +83,7 @@ void Game::HandleInput() {
                 }
 
                 else if (clickedChessPiece == nullptr) {
-                    if (selectedChessPiece->Move(hoveredTileIndexes)) {
+                    if (selectedChessPiece->Move(hoveredTileIndexes, false)) {
                         std::cout << "Piece at position (" << selectedTileIndexes.x << ", " << selectedTileIndexes.y
                             << ") moved to tile (" << hoveredTileIndexes.x << ", " << hoveredTileIndexes.y << ")." << std::endl;
 
@@ -136,11 +131,6 @@ void Game::calculateHoveredTilePosition(sf::Vector2i& mousePos, sf::Vector2i& ch
     }
 }
 
-void Game::Update()
-{
-
-}
-
 void Game::Draw()
 {
     window->clear(sf::Color::Cyan);
@@ -164,13 +154,13 @@ void Game::Draw()
     
     window->draw(chessBoardBackground);
 
-
+    //Tiles
     sf::Texture lightTileTexture;
     sf::Texture darkTileTexture;
 
     if (!lightTileTexture.loadFromFile(".../../Img/WhiteTile.png") ||
         !darkTileTexture.loadFromFile(".../../Img/BlackTile.png")) {
-        std::cerr << "Ошибка: не удалось загрузить изображения тайлов." << std::endl;
+        std::cout << "tiles loading error";
         return;
     }
 
@@ -226,26 +216,26 @@ void Game::Draw()
         highlightedTile.setFillColor(sf::Color(0, 0, 0, 100));
         window->draw(highlightedTile);
     }
-    for (int i = 0; i < 8; ++i) {
-        /*
-        sf::Text rowLabel;
-        rowLabel.setFont(font);
-        rowLabel.setString(std::to_string(8 - i));
-        rowLabel.setCharacterSize(24);
-        rowLabel.setFillColor(sf::Color::Black);
-        rowLabel.setPosition(offsetXForChessBoard - 30, i * TileSize + offsetYForChessBoard + TileSize / 4);
-        window->draw(rowLabel);
-
-        sf::Text colLabel;
-        colLabel.setFont(font);
-        colLabel.setString(std::string(1, 'A' + i));
-        colLabel.setCharacterSize(24);
-        colLabel.setFillColor(sf::Color::Black);
-        colLabel.setPosition(i * TileSize + offsetXForChessBoard + TileSize / 3, offsetYForChessBoard + 8 * TileSize);
-        window->draw(colLabel);
-        */
+    //Hints for moving pieces
+     if (ChessPiece* piece = chessBoard->getChessPieceByPos(selectedTileIndexes.x, selectedTileIndexes.y))
+    {
+         sf::Sprite hintSprite;
+         sf::Texture hintTextureForMoving;
+         sf::Texture hintTextureForAttacking;
+         hintTextureForMoving.loadFromFile(".../../Img/hintOnTile.png");
+         hintTextureForAttacking.loadFromFile(".../../Img/hintOnAttack.png");
+       for (sf::Vector2i pos : chessBoard->getAllPositionsWherePieceCanMove(piece)) {
+         
+           if(chessBoard->getChessPieceByPos(pos.x, pos.y))
+               hintSprite.setTexture(hintTextureForAttacking);
+           else
+               hintSprite.setTexture(hintTextureForMoving);
+           hintSprite.setPosition(pos.x * TileSize + offsetXForChessBoard, pos.y * TileSize + offsetYForChessBoard);
+            window->draw(hintSprite);
+        }
     }
-
+    
+    
     // Which turn is it 
     sf::Text turnLabel;
     turnLabel.setFont(font);
@@ -267,8 +257,6 @@ void Game::Draw()
     kingTexture.loadFromFile(".../../Img/WhiteKingForCounter.png");
     kingSprite.setPosition(WHITE_KING_COUNTER_POSITION);
     window->draw(kingSprite);
-
-  
 
     sf::Vector2f OffsetForBlackPawns = { WHITE_KING_COUNTER_POSITION.x - 35,WHITE_KING_COUNTER_POSITION.y + 200 };
     sf::Vector2f OffsetForWhitePawns = { BLACK_KING_COUNTER_POSITION.x - 35,BLACK_KING_COUNTER_POSITION.y + 200 };

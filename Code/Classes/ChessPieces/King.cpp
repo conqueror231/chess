@@ -51,7 +51,7 @@ bool King::Ñastling(sf::Vector2i newPosition, bool onlyCheckIfCanCastle)
     return false;
 }
 
-bool King::Move(sf::Vector2i newPosition)
+bool King::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove = false)
 {
     if (CanMoveTo(newPosition) == false) {
         return false;
@@ -73,4 +73,22 @@ bool King::Move(sf::Vector2i newPosition)
 
 bool King::getIsFirstMove() const {
     return isFirstMove;
+}
+
+bool King::CanMoveForHint(sf::Vector2i newPosition)
+{
+   
+    if (Ñastling(newPosition, true))
+    {
+        std::cout << "Castling possible\n";
+        return true;
+    }
+    int distanceX = std::abs(newPosition.x - this->position.x);
+    int distanceY = std::abs(newPosition.y - this->position.y);
+
+    if ((distanceX == 1 && distanceY == 0) || (distanceX == 0 && distanceY == 1) || (distanceX == 1 && distanceY == 1))
+    {
+        return true;
+    }
+    return false;
 }

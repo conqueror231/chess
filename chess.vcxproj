@@ -154,9 +154,7 @@
     <ClCompile Include="Code\Classes\ChessPieces\Queen.cpp" />
     <ClCompile Include="Code\Classes\ChessPieces\King.cpp" />
     <ClCompile Include="Code\Classes\ChessPieces\Knight.cpp" />
-    <ClCompile Include="Code\Classes\ChessPieces\PieceType.cpp" />
     <ClCompile Include="Code\Classes\GameMode.cpp" />
-    <ClCompile Include="Code\Classes\Player.cpp" />
     <ClCompile Include="Code\Classes\GameLog.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,7 +173,6 @@
     <ClInclude Include="Code\Classes\ChessPieces\PieceType.h" />
     <ClInclude Include="Code\Classes\Direction.h" />
     <ClInclude Include="Code\Classes\GameMode.h" />
-    <ClInclude Include="Code\Classes\Player.h" />
     <ClInclude Include="Code\Classes\GameLog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

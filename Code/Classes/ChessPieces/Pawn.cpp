@@ -35,7 +35,7 @@ bool Pawn::CanMoveTo(sf::Vector2i newPosition)
 		return false;
 	
 
-	isFirstMove = false;
+
 	return true;
 }
 
@@ -73,10 +73,24 @@ bool Pawn::NeedToPromote()
 	return false;
 }
 
-bool Pawn::Move(sf::Vector2i newPosition) {
-	if (ChessPiece::Move(newPosition) == true) {
-		if(NeedToPromote() == true)
-			ChessBoard::getInstance().PromotePawn(*this);
+bool Pawn::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove) {
+	if (ChessPiece::Move(newPosition, onlyCheckIfCanMove) == true) {
+		if (onlyCheckIfCanMove == false) {
+			isFirstMove = false;
+			if (NeedToPromote() == true)
+				ChessBoard::getInstance().PromotePawn(*this);
+		}
+			return true;
+	
+	}
+	return false;
+}
+
+bool Pawn::Attack(ChessPiece& targetPiece, bool onlyCheckIfCanMove )
+{
+	if (ChessPiece::Attack(targetPiece, onlyCheckIfCanMove)) {
+		if(onlyCheckIfCanMove == false)
+		isFirstMove = false;
 		return true;
 	}
 	return false;

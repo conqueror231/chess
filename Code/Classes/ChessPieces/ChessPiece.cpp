@@ -91,20 +91,23 @@ bool ChessPiece::IsPathClear(Direction dir, sf::Vector2i targetPos)
 
     return true;
 }
-bool ChessPiece::Move(sf::Vector2i newPosition)
+bool ChessPiece::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove)
 {
 	if (CanMoveTo(newPosition) == false) {
 		return false;
 	}
-	if (isKingInCheck(newPosition))
+	if (isKingInCheck(this->position)) {
 		return false;
-
-	GameLog::getInstance().logPieceMoved(this->position, newPosition);
-	this->position = newPosition;
+	}
+	if (onlyCheckIfCanMove == false) {
+		GameLog::getInstance().logPieceMoved(this->position, newPosition);
+		this->position = newPosition;
+	}
 	return true;
 }
 bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 {
+
 	bool isHorizontalMove = (newPosition.y == this->position.y);
 	bool isVerticalMove = (newPosition.x == this->position.x);
 	bool isDiagonalMove = (std::abs(newPosition.x - this->position.x) == std::abs(newPosition.y - this->position.y));
@@ -119,6 +122,7 @@ bool ChessPiece::CanMoveTo(sf::Vector2i newPosition)
 	if (isHorizontalMove && !IsPathClear(Direction::Horizontal, newPosition)) return false;
 	if (isVerticalMove && !IsPathClear(Direction::Vertical, newPosition)) return false;
 	if (isDiagonalMove && !IsPathClear(Direction::Diagonal, newPosition)) return false;
+
 
 	return true;
 }
@@ -148,20 +152,23 @@ bool ChessPiece::CanAttack(sf::Vector2i newPosition)
 
 	return true;
 }
-bool ChessPiece::Attack(ChessPiece& targetPiece)
+bool ChessPiece::Attack(ChessPiece& targetPiece, bool onlyCheckIfCanMove)
 {
-	if (CanAttack(targetPiece) == false){
+	if (CanAttack(targetPiece) == false) {
 		GameLog::getInstance().addLog("Can`t attack this piece");
 		return false;
 	}
-	if (isKingInCheck(targetPiece.GetPosition(), &targetPiece)) {
 
+	if (isKingInCheck(targetPiece.GetPosition(), &targetPiece)) {
 		return false;
 	}
 
-	GameLog::getInstance().logPieceAttack(this->position, targetPiece.GetPosition(), targetPiece.GetType());
-	this->position = targetPiece.GetPosition();
-	ChessBoard::getInstance().removeChessPiece(targetPiece);
+	if (onlyCheckIfCanMove == false)
+	{
+		GameLog::getInstance().logPieceAttack(this->position, targetPiece.GetPosition(), targetPiece.GetType());
+		this->position = targetPiece.GetPosition();
+		ChessBoard::getInstance().removeChessPiece(targetPiece);
+	}
 	return true;
 }
 void ChessPiece::MoveWithoutChecking(sf::Vector2i newPosition)

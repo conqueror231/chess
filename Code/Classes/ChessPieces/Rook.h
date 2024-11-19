@@ -14,7 +14,7 @@ public:
         canMoveHorizontal = true;
         canMoveVertical = true;
     }
-    bool Move(sf::Vector2i newPosition) override;
+    bool Move(sf::Vector2i newPosition,bool onlyCheckIfCanMove = false) override;
 
 };
 

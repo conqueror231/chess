@@ -13,6 +13,6 @@ public:
         : ChessPiece(startPosition, pieceType, isWhite) {}
     bool CanMoveTo(sf::Vector2i newPosition) override;
     bool Ñastling(sf::Vector2i newPosition, bool onlyCheckIfCanCastle = false);
-    bool Move(sf::Vector2i newPosition) override;
-
+    bool Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove) override;
+    bool CanMoveForHint(sf::Vector2i newPosition);
 };

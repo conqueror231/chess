@@ -11,10 +11,6 @@ class GameMode
 {
 private:
 	bool isWhiteTurn = true;
-	int whiteTime = 300;      
-	int blackTime = 300;
-	
-
 
 	bool isCheckmate(bool isWhite);
 	bool isStalemate();

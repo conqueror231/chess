@@ -4,7 +4,6 @@
 #include "iostream"
 void ChessBoard::InnitChessBoard()
 {
-
     //black pawns
     for (int i = 0; i < 8; ++i) {
         ChessPieces.push_back(new Pawn(sf::Vector2i{ i, 1 }, PieceType::Pawn, false));
@@ -95,7 +94,6 @@ bool ChessBoard::removeChessPiece(ChessPiece& chessPieceForDeleting) {
 std::vector<sf::Vector2i> ChessBoard::getPositionsOfAllPiecesOnDirection(Direction dir, sf::Vector2i innitPos)
 {
     std::vector<sf::Vector2i> positions{};
-
     if (dir == Direction::Horizontal)
     {
         for (ChessPiece* piece : ChessPieces)
@@ -162,6 +160,7 @@ void ChessBoard::resetBoard() {
 
 bool ChessBoard::Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCanCastle)
 {
+ 
     int y = isWhite ? 7 : 0;
     sf::Vector2i closerRookPos = { 7, y };
     sf::Vector2i furtherRookPos = { 0, y };
@@ -181,17 +180,17 @@ bool ChessBoard::Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCa
     if ((rookPiece = dynamic_cast<Rook*>(ChessPieceOnRookPos)) == nullptr) return false;
     if (!rookPiece->getIsFirstMove()) return false;
 
-
+     int step = isShortCastling ? +1 : -1;
+     int newXPos = startKingPos.x + step;
     while (true) {
-        static int step = isShortCastling ? +1 : -1;
-        static int newXPos = startKingPos.x + step;
+    
 
         if (ChessPiece* chessPiece = getChessPieceByPos(newXPos, startKingPos.y)) {
             if (chessPiece->GetType() == PieceType::King) break;
             else {
                 if (chessPiece->GetType() == PieceType::Rook) break;
 
-                std::cout << "Figure on the Way" << std::endl;
+                //std::cout << "Figure on the Way" << std::endl;
                 return false;
             }
         }
@@ -242,5 +241,36 @@ void ChessBoard::PromotePawn(Pawn& pawnToPromote)
 std::vector<std::pair<PieceType, bool>> ChessBoard::GetCapturedPiecesTypes()
 {
     return capturedPieces;
+}
+
+std::vector<sf::Vector2i> ChessBoard::getAllPositionsWherePieceCanMove(ChessPiece* piece)
+{
+    std::vector<sf::Vector2i> positions;
+    for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
+            if (King* king = dynamic_cast<King*>(piece)) {
+                if (king->CanMoveTo(sf::Vector2i(x, y))) {
+                    if (IsTileHasFigureOnIt(x, y) == false) {
+                        positions.push_back(sf::Vector2i(x, y));
+                    }
+                }
+            }
+            else {
+                if (piece->Move(sf::Vector2i(x, y), true)) {
+                    if (IsTileHasFigureOnIt(x, y) == false) {
+                        positions.push_back(sf::Vector2i(x, y));
+                    }
+                }
+                if (ChessPiece* pieceForTaking = getChessPieceByPos(x, y)) {
+                    if (piece->Attack(*pieceForTaking, true)) {
+                        positions.push_back(sf::Vector2i(x, y));
+                    }
+                }
+                
+
+            }
+        }
+    }
+    return positions;
 }
 

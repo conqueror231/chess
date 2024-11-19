@@ -28,11 +28,11 @@ public:
         return pieceType;
     }
     bool isKingInCheck(sf::Vector2i newPosition, ChessPiece* exceptionPiece = nullptr);
-    virtual bool Move(sf::Vector2i newPosition);
+    virtual bool Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove = false);
     virtual bool CanMoveTo(sf::Vector2i newPosition);
     virtual bool CanAttack(ChessPiece& targetPiece);
     virtual bool CanAttack(sf::Vector2i newPosition);
-    virtual bool Attack(ChessPiece& targetPiece); 
+    virtual bool Attack(ChessPiece& targetPiece, bool onlyCheckIfCanMove = false);
 
     void MoveWithoutChecking(sf::Vector2i newPosition);
 

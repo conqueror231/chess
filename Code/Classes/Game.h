@@ -36,7 +36,6 @@ private:
 
 	void calculateHoveredTilePosition(sf::Vector2i& mousePos, sf::Vector2i& chessBoardStartPos);
 
-	void Update() override;
 
 	void Draw() override;
 

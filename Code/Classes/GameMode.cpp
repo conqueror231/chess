@@ -5,22 +5,18 @@
 bool GameMode::isCheckmate(bool isWhite)
 {
     bool canMove = false;
-
     for (ChessPiece* piece : ChessBoard::getInstance().getChessPieces()) {
         if (piece->isWhite == isWhite) {  
             for (int x = 0; x < 8; ++x) {
                 for (int y = 0; y < 8; ++y) {
                     sf::Vector2i newPosition(x, y);
-
                     ChessPiece* pieceOnTile = ChessBoard::getInstance().getChessPieceByPos(newPosition.x, newPosition.y);
-
                     if (pieceOnTile == nullptr) {
                         if (piece->CanMoveTo(newPosition) && !piece->isKingInCheck(newPosition)) {
                             canMove = true;
                             break;
                         }
                     }
-      
                     else {
                         if (pieceOnTile->isWhite == isWhite) {
                             continue; 
@@ -38,7 +34,6 @@ bool GameMode::isCheckmate(bool isWhite)
         }
         if (canMove) break;  
     }
-
     if (!canMove) {
         if (ChessBoard::getInstance().isKingInCheck(!isWhiteTurn) == false)
             return false;
