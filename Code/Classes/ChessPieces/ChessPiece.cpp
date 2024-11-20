@@ -96,7 +96,7 @@ bool ChessPiece::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove)
 	if (CanMoveTo(newPosition) == false) {
 		return false;
 	}
-	if (isKingInCheck(this->position)) {
+	if (isKingInCheck(newPosition)) {
 		return false;
 	}
 	if (onlyCheckIfCanMove == false) {
@@ -155,7 +155,8 @@ bool ChessPiece::CanAttack(sf::Vector2i newPosition)
 bool ChessPiece::Attack(ChessPiece& targetPiece, bool onlyCheckIfCanMove)
 {
 	if (CanAttack(targetPiece) == false) {
-		GameLog::getInstance().addLog("Can`t attack this piece");
+		if(onlyCheckIfCanMove == false)
+	    GameLog::getInstance().addLog("Can`t attack this piece");
 		return false;
 	}
 

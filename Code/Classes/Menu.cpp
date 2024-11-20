@@ -39,7 +39,7 @@ void Menu::Draw() {
 
     sf::Sprite background;
     sf::Texture text;
-    text.loadFromFile(".../../Img/MenuBackground.png");
+    text.loadFromFile("Img/MenuBackground.png");
     background.setTexture(text);
     background.setPosition(0, 0);
 

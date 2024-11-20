@@ -51,7 +51,7 @@ bool King::Ñastling(sf::Vector2i newPosition, bool onlyCheckIfCanCastle)
     return false;
 }
 
-bool King::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove = false)
+bool King::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove)
 {
     if (CanMoveTo(newPosition) == false) {
         return false;
@@ -65,8 +65,10 @@ bool King::Move(sf::Vector2i newPosition, bool onlyCheckIfCanMove = false)
     if (isKingInCheck(newPosition))
         return false;
 
-    isFirstMove = false;
-    this->position = newPosition;
+    if (onlyCheckIfCanMove == false) {
+        isFirstMove = false;
+        this->position = newPosition;
+    }
     return true;
 
 }

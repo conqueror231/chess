@@ -197,7 +197,7 @@ void Game::Draw()
     }
 
     sf::Font font;
-    if (!font.loadFromFile(".../../Fonts/beer money.ttf")) {
+    if (!font.loadFromFile("Fonts/beer money.ttf")) {
         std::cerr << "Failed to load font!\n";
     }
     //hovering tiles

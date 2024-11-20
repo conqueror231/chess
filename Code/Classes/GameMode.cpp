@@ -45,10 +45,24 @@ bool GameMode::isCheckmate(bool isWhite)
 }
 bool GameMode::isStalemate()
 {
-    if(isCheckmate(!isWhiteTurn) && ChessBoard::getInstance().isKingInCheck(!isWhiteTurn) == false)
-    return true;
+    if (ChessBoard::getInstance().isKingInCheck(!isWhiteTurn)) {
+        return false; 
+    }
 
-    return false;
+    for (ChessPiece* piece : ChessBoard::getInstance().getChessPieces()) {
+        if (piece->isWhite == !isWhiteTurn) { 
+            for (int x = 0; x < 8; ++x) {
+                for (int y = 0; y < 8; ++y) {
+                    sf::Vector2i newPosition(x, y);
+                    if (piece->CanMoveTo(newPosition) && !piece->isKingInCheck(newPosition)) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 void GameMode::endGame(const std::string& message)

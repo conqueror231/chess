@@ -5,7 +5,7 @@
 void ChessBoard::InnitChessBoard()
 {
     //black pawns
-    for (int i = 0; i < 8; ++i) {
+   for (int i = 0; i < 8; ++i) {
         ChessPieces.push_back(new Pawn(sf::Vector2i{ i, 1 }, PieceType::Pawn, false));
     }
     //white pawns
@@ -39,7 +39,7 @@ void ChessBoard::InnitChessBoard()
 
     //White Queen
     ChessPieces.push_back(new Queen(sf::Vector2i{ 3, 7 }, PieceType::Queen, true));
-
+     
     // Black King 
     ChessPieces.push_back(new King(sf::Vector2i{ 4, 0 }, PieceType::King, false));
 
@@ -204,7 +204,6 @@ bool ChessBoard::Castling(bool isWhite, bool isShortCastling, bool onlyCheckIfCa
                 }
             }
         }
-        std::cout << "qwe" << std::endl;
 
         newXPos += step;
 
@@ -254,6 +253,12 @@ std::vector<sf::Vector2i> ChessBoard::getAllPositionsWherePieceCanMove(ChessPiec
                         positions.push_back(sf::Vector2i(x, y));
                     }
                 }
+                if (ChessPiece* pieceForTaking = getChessPieceByPos(x, y)) {
+                    if (king->Attack(*pieceForTaking, true)) {
+                        positions.push_back(sf::Vector2i(x, y));
+                    }
+                }
+
             }
             else {
                 if (piece->Move(sf::Vector2i(x, y), true)) {

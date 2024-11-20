@@ -4,14 +4,15 @@
 
 WindowStateManager* WStateManager;
 
-int main()
+int WinMain()
 {
   
     WStateManager = &WindowStateManager::getInstance();
     WStateManager->InnitWindow({ 1024,768 }, "Main Menu");
 
     WStateManager->createMenu();
-    
+
+
   
 
     return 0;
